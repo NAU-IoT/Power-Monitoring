@@ -3,6 +3,8 @@
   
   The HAT is connected to the GPIO pins, in this case on a Raspberry Pi Zero. 
   
+  The HAT will be collecting data from it's inputs and the data will be published remotely by using MQTT.
+  
 
 ## Dependencies
 
@@ -11,11 +13,11 @@
   
 ## Using the HAT
 
-  - Clone github repository 
-    - `git clone https://github.com/sbcshop/Power-Monitor-HAT.git`
-    - `cd Power-Monitor-HAT`
-    - `cd RaspberryPi`
-    - `python3 demo.py`
-  - next step
-  - next step
-  - next step
+  - Clone github repository `git clone https://github.com/sbcshop/Power-Monitor-HAT.git`
+  - Change into Power Monitor directory `cd Power-Monitor-HAT`
+  - Change into RaspberryPi directory `cd RaspberryPi`
+  - Create script to run code `nano [YourFileName].py`
+  - Paste code from github file PowerMonitor.py into your script
+  - Change code according to your implementation, I.E. topic, servers, etc...
+  - Run script with `python3 [YourFileName].py`
+  - Done!
