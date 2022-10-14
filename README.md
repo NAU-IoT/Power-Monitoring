@@ -9,7 +9,7 @@
 ## Dependencies
 
   - Ensure I2C is enabled on the RaspberryPi
-  - use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
+  - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
   
 ## Using the HAT
 
