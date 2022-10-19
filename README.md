@@ -47,11 +47,11 @@
   - Clone github repository `git clone https://github.com/sbcshop/Power-Monitor-HAT.git`
   - Change into Power Monitor directory `cd Power-Monitor-HAT`
   - Change into RaspberryPi directory `cd RaspberryPi`
-  - Create script to run code `nano [YourFileName].py`
+  - Create script to run code `nano YourFileName.py`
   - Paste code from github file PowerMonitor.py into your script
   - Change code according to your implementation, I.E. topic, TLS set, etc...
   - Use command `sudo su` to get root user permissions (script only works when ran with root permissions)
-  - Run script with `python3 [YourFileName].py`
+  - Run script with `python3 YourFileName.py`
   - To see data being published, subscribe to the specified topic using command: 
        
        `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
