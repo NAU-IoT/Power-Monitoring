@@ -1,4 +1,4 @@
-#! /usr/bin/python #makes script executable in command line with ./
+#! /usr/bin/python
 
 import time
 import board
@@ -7,14 +7,13 @@ import paho.mqtt.client as mqtt
 import logging
 
 #define the topic
-topic = "PowerMonitor"
+topic = "[YOUR TOPIC HERE]"
 
 # define on_connect function
 def on_connect(client, userdata, flags, rc):
     print(f"Connected with result code {rc}")
-    # subscribe, which need to put into on_connect
-    # if reconnect after losing the connection with the broker, it will continu>
-    client.subscribe("PowerMonitor")
+    # subscribe to the specified topic
+    client.subscribe(topic)
 
 # define on_publish function
 def on_publish(client, userdata, mid):
@@ -50,16 +49,16 @@ client.on_message = on_message
 client.on_publish = on_publish
 client.on_subscribe = on_subscribe
 
-# set the will message, when the Raspberry Pi is powered off, or the network is>
-client.will_set('PowerMonitor', b'{"status": "Off"}')
+# set the will message, when the Raspberry Pi is powered off, or the network is interrupted
+client.will_set(topic, b'{"status": "Off"}')
 
 #establish tls set for secure connection over port 8883
-#client.tls_set(ca_certs="/home/pi/RemotePiReset/ca.crt",
-#               certfile="/home/pi/RemotePiReset/RemotePiReset.crt",
-#               keyfile="/home/pi/RemotePiReset/RemotePiReset.key")
+client.tls_set(ca_certs="/SOME/PATH/TO/ca.crt", #change path and central authority cert as necessary
+               certfile="/SOME/PATH/TO/server.crt", #change path and certfile as necessary
+               keyfile="/SOME/PATH/TO/server.key") #change path and keyfile as necessary
 
-# create connection, the three parameters are broker address, broker port numbe>
-client.connect("test.mosquitto.org", 1883, 60)
+# create connection, the three parameters are broker address, broker port number, keepalive (only broker address and broker port number are required)
+client.connect("[YOUR BROKER IP]", 8883, 60)
 
 
 i2c_bus = board.I2C()
@@ -100,16 +99,18 @@ while True:
     power3 = ina3.power
     current3 = ina3.current                # current in mA
 
-    Str1 = "RASPBERRYPI: PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:>
-    Str2 = "SOLAR CELL:  PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:>
-    Str3 = "OTHER LOAD:  PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:>
+    Str1 = "RASPBERRYPI: PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:{:9.6f}A"
+    Str2 = "SOLAR CELL:  PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:{:9.6f}A"
+    Str3 = "OTHER LOAD:  PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:{:9.6f}A"
 
     Str4 = " "
-
-    client.publish(topic, Str1.format((bus_voltage1 + shunt_voltage1),(shunt_voltage1),(bus_voltage1),(power1),(current1/1000)>
-    client.publish(topic, Str2.format((bus_voltage2 + shunt_voltage2),(shunt_voltage2),(bus_voltage2),(power2),(current2/1000)>
-    client.publish(topic, Str3.format((bus_voltage3 + shunt_voltage3),(shunt_voltage3),(bus_voltage3),(power3),(current3/1000)>
+    
+    #Publish data to topic then wait 5 seconds before looping again
+    client.publish(topic, Str1.format((bus_voltage1 + shunt_voltage1),(shunt_voltage1),(bus_voltage1),(power1),(current1/1000)))
+    client.publish(topic, Str2.format((bus_voltage2 + shunt_voltage2),(shunt_voltage2),(bus_voltage2),(power2),(current2/1000)))
+    client.publish(topic, Str3.format((bus_voltage3 + shunt_voltage3),(shunt_voltage3),(bus_voltage3),(power3),(current3/1000)))
     client.publish(topic, Str4)
     client.publish(topic, Str4)
     client.publish(topic, Str4)
     time.sleep(5)
+
