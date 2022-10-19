@@ -50,6 +50,6 @@
   - Create script to run code `nano [YourFileName].py`
   - Paste code from github file PowerMonitor.py into your script
   - Change code according to your implementation, I.E. topic, TLS set, etc...
-  - Use command sudo su to get root user permissions (script only works when ran with root permissions)
+  - Use command `sudo su` to get root user permissions (script only works when ran with root permissions)
   - Run script with `python3 [YourFileName].py`
   - Done!
