@@ -7,7 +7,33 @@
   The HAT is connected to the GPIO pins, in this case on a Raspberry Pi Zero. 
   
   The HAT will be collecting data from it's inputs and the data will be published remotely by using MQTT.
+
+
+## Components
+
+**RASPBERRY PI ZERO**
+
+   Used to run power monitoring python script
+   
+   
+   
+**POWER MONITORING HAT**
+
+   Used to observe output of solar cell and consumption of load (load in this case is Raspberry Pi 3 or 4)
   
+  
+
+**RASPBERRY PI 3 or 4**
+
+  Wired through the power monitoring hat to monitor consumption
+    
+
+
+**SOLAR CELL**
+
+   Wired through the power monitoring hat to monitor power output
+
+
 
 ## Dependencies
 
