@@ -49,7 +49,7 @@
   - Change into RaspberryPi directory `cd RaspberryPi`
   - Create script to run code `nano YourFileName.py`
   - Paste code from github file PowerMonitor.py into your script
-  - Change code according to your implementation, I.E. topic, TLS set, etc...
+  - Change code according to your implementation, I.E. topic, TLS set, etc... (Lines 10, 56, 57, 58, 61)
   - Use command `sudo su` to get root user permissions (script only works when ran with root permissions)
   - Run script with `python3 YourFileName.py`
   - To see data being published, subscribe to the specified topic using command: 
