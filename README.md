@@ -7,8 +7,6 @@
   The HAT is connected to the GPIO pins, in this case on a Raspberry Pi Zero. 
   
   The HAT will be collecting data from it's inputs and the data will be published remotely by using MQTT.
-  
-  Python script must be ran with root permissions
 
 
 ## Components
@@ -50,7 +48,8 @@
   - Create script to run code `nano YourFileName.py`
   - Paste code from github file PowerMonitor.py into your script
   - Change code according to your implementation, I.E. topic, TLS set, etc... (Lines 10, 56, 57, 58, 61)
-  - Use command `sudo su` to get root user permissions (script only works when ran with root permissions)
+  - Ensure keyfile has the correct permissions for the user to run the script without error
+    - If getting error **"Error: Problem setting TLS options: File not found."** use command `sudo chmod 640 YourKeyFile.key` (sets permissions so that the user and group are able to read the keyfile)
   - Run script with `python3 YourFileName.py`
   - To see data being published, subscribe to the specified topic using command: 
        
