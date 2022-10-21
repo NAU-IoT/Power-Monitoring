@@ -46,11 +46,12 @@
   - Change into Power Monitor directory `cd Power-Monitor-HAT`
   - Change into RaspberryPi directory `cd RaspberryPi`
   - Create script to run code `nano YourFileName.py`
+  - Set permissions to make the script executable by typing `chmod +x SCRIPTNAME.py` in the command line
   - Paste code from github file PowerMonitor.py into your script
   - Change code according to your implementation, I.E. topic, TLS set, etc... (Lines 10, 56, 57, 58, 61)
   - Ensure keyfile has the correct permissions for the user to run the script without error
     - If getting error **"Error: Problem setting TLS options: File not found."** use command `sudo chmod 640 YourKeyFile.key` (sets permissions so that the user and group are able to read the keyfile)
-  - Run script with `python3 YourFileName.py`
+  - Run script with `./YourFileName.py`
   - To see data being published, subscribe to the specified topic using command: 
        
        `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
