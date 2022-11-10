@@ -40,6 +40,10 @@
   - Ensure I2C is enabled on the RaspberryPi
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
   - Install the GPIO package using `apt-get install rpi.gpio`
+  - Install mosquitto service 
+    - `sudo apt-get install mosquitto mosquitto-clients`
+    - `sudo systemctl enable mosquitto`
+    - check if mosquitto is running `sudo systemctl status mosquitto`
   - Install the paho.mqtt library 
     - `git clone https://github.com/eclipse/paho.mqtt.python`
     - `cd paho.mqtt.python`
