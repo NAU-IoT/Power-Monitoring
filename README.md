@@ -40,7 +40,12 @@
   - Ensure I2C is enabled on the RaspberryPi
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
   - Install the GPIO package using `apt-get install rpi.gpio`
-  
+  - Install the paho.mqtt library 
+    - `git clone https://github.com/eclipse/paho.mqtt.python`
+    - `cd paho.mqtt.python`
+    - `python3 setup.py install`
+
+
 ## Using the HAT
 
   - Clone github repository `git clone https://github.com/sbcshop/Power-Monitor-HAT.git`
