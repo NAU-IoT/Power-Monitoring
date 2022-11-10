@@ -39,6 +39,7 @@
 
   - Ensure I2C is enabled on the RaspberryPi
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
+  - Install the GPIO package using `apt-get install rpi.gpio`
   
 ## Using the HAT
 
