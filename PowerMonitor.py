@@ -5,14 +5,20 @@ import board
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 import paho.mqtt.client as mqtt
 import logging
+import PMConfiguration as config
 
 #define the topic
-topic = "[YOUR TOPIC HERE]"
+topic = config.topic
+Broker = config.broker
+Load0 = config.load0
+Load1 = config.load1
+Load2 = config.load2
 
 # define on_connect function
 def on_connect(client, userdata, flags, rc):
     print(f"Connected with result code {rc}")
-    # subscribe to the specified topic
+    # subscribe, which need to put into on_connect
+    # if reconnect after losing the connection with the broker, it will continu>
     client.subscribe(topic)
 
 # define on_publish function
@@ -49,16 +55,16 @@ client.on_message = on_message
 client.on_publish = on_publish
 client.on_subscribe = on_subscribe
 
-# set the will message, when the Raspberry Pi is powered off, or the network is interrupted
-client.will_set(topic, b'{"status": "Off"}')
+# set the will message, when the Raspberry Pi is powered off, or the network is>
+client.will_set(topic, b'Monitoring script has terminated')
 
 #establish tls set for secure connection over port 8883
-client.tls_set(ca_certs="/SOME/PATH/TO/ca.crt", #change path and central authority cert as necessary
-               certfile="/SOME/PATH/TO/server.crt", #change path and certfile as necessary
-               keyfile="/SOME/PATH/TO/server.key") #change path and keyfile as necessary
+#client.tls_set(ca_certs="/home/mwc72/ca.crt",
+#               certfile="/home/mwc72/server.crt",
+#               keyfile="/home/mwc72/server.key")
 
-# create connection, the three parameters are broker address, broker port number, keepalive (only broker address and broker port number are required)
-client.connect("[YOUR BROKER IP]", 8883, 60)
+# create connection, the three parameters are broker address, broker port numbe>
+client.connect(Broker, 1883, 60)
 
 
 i2c_bus = board.I2C()
@@ -84,6 +90,8 @@ ina3.bus_voltage_range = BusVoltageRange.RANGE_16V
 
 # measure and display loop
 while True:
+    currentDandT = time.ctime()
+
     bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
     shunt_voltage1 = ina1.shunt_voltage    # voltage between V+ and V- across the shunt
     power1 = ina1.power
@@ -99,18 +107,17 @@ while True:
     power3 = ina3.power
     current3 = ina3.current                # current in mA
 
-    Str1 = "RASPBERRYPI: PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:{:9.6f}A"
-    Str2 = "SOLAR CELL:  PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:{:9.6f}A"
-    Str3 = "OTHER LOAD:  PSU Voltage:{:6.3f}V    Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Power:{:9.6f}W    Current:{:9.6f}A"
+    Str1 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
+    Str2 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
+    Str3 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
 
     Str4 = " "
-    
-    #Publish data to topic then wait 5 seconds before looping again
-    client.publish(topic, Str1.format((bus_voltage1 + shunt_voltage1),(shunt_voltage1),(bus_voltage1),(power1),(current1/1000)))
-    client.publish(topic, Str2.format((bus_voltage2 + shunt_voltage2),(shunt_voltage2),(bus_voltage2),(power2),(current2/1000)))
-    client.publish(topic, Str3.format((bus_voltage3 + shunt_voltage3),(shunt_voltage3),(bus_voltage3),(power3),(current3/1000)))
+
     client.publish(topic, Str4)
+    client.publish(topic, currentDandT)
+    client.publish(topic, Str1.format((Load0),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+    client.publish(topic, Str2.format((Load1),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+    client.publish(topic, Str3.format((Load2),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
     client.publish(topic, Str4)
     client.publish(topic, Str4)
     time.sleep(5)
-
