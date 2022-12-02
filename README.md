@@ -62,7 +62,7 @@
   - Paste code from github file PowerMonitor.py into your script
   - Paste code from github file PMConfiguration.py
     - Change variable names according to your implementation
-  - To use TLS set, uncomment lines 66-69 and change 1883 to 8883 on line 
+  - To use TLS set, uncomment lines 66-69 and change 1883 to 8883 on line 72 
   - IF USING TLS SET: ensure keyfile has the correct permissions for the user to run the script without error
     - If getting error **"Error: Problem setting TLS options: File not found."** use command `sudo chmod 640 YourKeyFile.key` (sets permissions so that the user and group are able to read the keyfile)
   - Run script with `./YourFileName.py`
