@@ -9,12 +9,15 @@ import paho.mqtt.client as mqtt
 import logging
 import PMConfiguration as config
 
-#define the topic
+#import variables from configuration file
 topic = config.topic
 Broker = config.broker
 Load0 = config.load0
 Load1 = config.load1
 Load2 = config.load2
+CA_Certs = config.cacert
+Certfile = config.certfile
+Keyfile = config.keyfile
 
 # define on_connect function
 def on_connect(client, userdata, flags, rc):
@@ -61,9 +64,9 @@ client.on_subscribe = on_subscribe
 client.will_set(topic, b'Monitoring script has terminated')
 
 #establish tls set for secure connection over port 8883
-#client.tls_set(ca_certs="/home/mwc72/ca.crt",
-#               certfile="/home/mwc72/server.crt",
-#               keyfile="/home/mwc72/server.key")
+#client.tls_set(ca_certs=CA_Certs,
+#               certfile=Certfile,
+#               keyfile=Keyfile)
 
 # create connection, the three parameters are broker address, broker port numbe>
 client.connect(Broker, 1883, 60)
