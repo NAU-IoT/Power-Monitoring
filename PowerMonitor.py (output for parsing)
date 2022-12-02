@@ -1,5 +1,7 @@
 #! /usr/bin/python
 
+#This script has a Comma Separated Value publishing format for parsing. This is inteded for Grafana to interpret and plot data.
+
 import time
 import board
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
