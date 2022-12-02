@@ -56,8 +56,8 @@
   - Clone github repository `git clone https://github.com/sbcshop/Power-Monitor-HAT.git`
   - Change into Power Monitor directory `cd Power-Monitor-HAT`
   - Change into RaspberryPi directory `cd RaspberryPi`
-  - Create script to run code `nano YourFileName.py`
-  - Create configuration script to easily modify variables within the code
+  - Create script to run code `touch YourFileName.py`
+  - Create configuration script to easily modify variables within the code `touch PMConfiguration.py`
   - Set permissions to make the script executable by typing `chmod +x SCRIPTNAME.py` in the command line
   - Paste code from github file PowerMonitor.py into your script
   - Paste code from github file PMConfiguration.py
