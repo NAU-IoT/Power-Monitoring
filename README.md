@@ -56,12 +56,12 @@
   - Clone github repository `git clone https://github.com/sbcshop/Power-Monitor-HAT.git`
   - Change into Power Monitor directory `cd Power-Monitor-HAT`
   - Change into RaspberryPi directory `cd RaspberryPi`
-  - Create script to run code `touch YourFileName.py`
-  - Create configuration script to easily modify variables within the code `touch PMConfiguration.py`
+  - Create script to run code `nano YourFileName.py`
+    - Paste code from github file PowerMonitor.py into your script
+  - Create configuration script to easily modify variables within the code `nano PMConfiguration.py`
+    - Paste code from github file PMConfiguration.py
+      - Change variable names according to your implementation
   - Set permissions to make the script executable by typing `chmod +x SCRIPTNAME.py` in the command line
-  - Paste code from github file PowerMonitor.py into your script
-  - Paste code from github file PMConfiguration.py
-    - Change variable names according to your implementation
   - To use TLS set, uncomment lines 66-69 and change 1883 to 8883 on line 72 
   - IF USING TLS SET: ensure keyfile has the correct permissions for the user to run the script without error
     - If getting error **"Error: Problem setting TLS options: File not found."** use command `sudo chmod 640 YourKeyFile.key` (sets permissions so that the user and group are able to read the keyfile)
@@ -72,4 +72,5 @@
     WITHOUT TLS: `mosquitto_sub -p 1883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
     
     WITH TLS: `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
+  
   - Done!
