@@ -12,9 +12,9 @@ import PMConfiguration as config
 #define the topic
 topic = config.topic
 Broker = config.broker
-Load1 = config.load0
-Load2 = config.load1
-Load3 = config.load2
+Load1 = config.load1
+Load2 = config.load2
+Load3 = config.load3
 CA_Certs = config.cacert
 Certfile = config.certfile
 Keyfile = config.keyfile
