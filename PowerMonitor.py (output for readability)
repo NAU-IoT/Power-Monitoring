@@ -12,9 +12,9 @@ import PMConfiguration as config
 #import variables from configuration file
 topic = config.topic
 Broker = config.broker
-Load0 = config.load0
 Load1 = config.load1
 Load2 = config.load2
+Load3 = config.load3
 CA_Certs = config.cacert
 Certfile = config.certfile
 Keyfile = config.keyfile
@@ -120,9 +120,9 @@ while True:
 
     client.publish(topic, Str4)
     client.publish(topic, currentDandT)
-    client.publish(topic, Str1.format((Load0),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
-    client.publish(topic, Str2.format((Load1),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
-    client.publish(topic, Str3.format((Load2),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+    client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+    client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
     client.publish(topic, Str4)
     client.publish(topic, Str4)
     time.sleep(5)
