@@ -4,14 +4,14 @@
   This project also utilizes the Adafruit Powerboost 1000c which can be purchased [here](https://www.adafruit.com/product/2465) 
   
   
-  The HAT is connected to the GPIO pins, in this case on a Raspberry Pi Zero. 
+  The HAT is connected to the GPIO pins, in this case on a Raspberry Pi 4. 
   
-  The HAT will be collecting data from it's inputs and the data will be published remotely by using MQTT.
+  The HAT will be collecting data from the terminals and the data will be published remotely by using MQTT.
 
 
 ## Components
 
-**RASPBERRY PI ZERO**
+**RASPBERRY PI 4**
 
    Used to run power monitoring python script
    
@@ -19,11 +19,11 @@
    
 **POWER MONITORING HAT**
 
-   Used to observe output of solar cell and consumption of load (load in this case is Raspberry Pi 3 or 4)
+   Used to observe output of solar cell and consumption of load (load in this case is a Raspberry Pi IO Board)
   
   
 
-**RASPBERRY PI 3 or 4**
+**RASPBERRY PI IO Board**
 
   Wired through the power monitoring hat to monitor consumption
     
@@ -39,7 +39,8 @@
 
   - Ensure I2C is enabled on the RaspberryPi
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
-  - Install the GPIO package using `apt-get install rpi.gpio`
+  - Install the GPIO package using 'sudo apt install python3-lgpio' (ubuntu GPIO support)
+    - If not on ubuntu: `apt-get install rpi.gpio`
   - Install mosquitto service 
     - `sudo apt-get install mosquitto mosquitto-clients`
     - `sudo systemctl enable mosquitto`
@@ -56,13 +57,18 @@
   - Change into Power Monitor directory `cd Power-Monitor-HAT`
   - Change into RaspberryPi directory `cd RaspberryPi`
   - Create script to run code `nano YourFileName.py`
+  - Create configuration script to easily modify variables within the code
   - Set permissions to make the script executable by typing `chmod +x SCRIPTNAME.py` in the command line
   - Paste code from github file PowerMonitor.py into your script
-  - Change code according to your implementation, I.E. topic, TLS set, etc... (Lines 10, 56, 57, 58, 61)
-  - Ensure keyfile has the correct permissions for the user to run the script without error
+  - Paste code from github file PMConfiguration.py
+    - Change variable names according to your implementation
+  - IF USING TLS SET: ensure keyfile has the correct permissions for the user to run the script without error
     - If getting error **"Error: Problem setting TLS options: File not found."** use command `sudo chmod 640 YourKeyFile.key` (sets permissions so that the user and group are able to read the keyfile)
   - Run script with `./YourFileName.py`
+    - Can also use `python3 YourFileName.py`
   - To see data being published, subscribe to the specified topic using command: 
-       
-       `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
+    
+    WITHOUT TLS: `mosquitto_sub -p 1883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
+    
+    WITH TLS: `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
   - Done!
