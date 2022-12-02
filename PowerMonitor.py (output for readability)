@@ -3,6 +3,8 @@
 #This script has an output intended to be human readable and digestable, such as in a demonstration. If parsing published data, refer to other version of script.
 
 import time
+from datetime import datetime
+import pytz
 import board
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 import paho.mqtt.client as mqtt
@@ -18,6 +20,7 @@ Load3 = config.load3
 CA_Certs = config.cacert
 Certfile = config.certfile
 Keyfile = config.keyfile
+Timezone = config.timezone
 
 # define on_connect function
 def on_connect(client, userdata, flags, rc):
@@ -95,7 +98,7 @@ ina3.bus_voltage_range = BusVoltageRange.RANGE_16V
 
 # measure and display loop
 while True:
-    currentDandT = time.ctime()
+    currentDandT = datetime.now(pytz.timezone(Timezone))
 
     bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
     shunt_voltage1 = ina1.shunt_voltage    # voltage between V+ and V- across the shunt
@@ -119,7 +122,7 @@ while True:
     Str4 = " "
 
     client.publish(topic, Str4)
-    client.publish(topic, currentDandT)
+    client.publish(topic, str(currentDandT))
     client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
     client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
     client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
