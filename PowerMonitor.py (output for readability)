@@ -1,5 +1,7 @@
 #! /usr/bin/python
 
+#This script has an output intended to be human readable and digestable, such as in a demonstration. If parsing published data, refer to other version of script.
+
 import time
 import board
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
