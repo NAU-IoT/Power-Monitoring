@@ -1,0 +1,13 @@
+[Unit]
+After=network.service
+Description=Power Monitor
+
+[Service]
+Type=simple
+# WorkingDirectory=/code/python/myapp
+ExecStart=/home/mwc72/PowerMonitor/PowerMonitor.sh
+# User=do-user
+
+[Install]
+WantedBy=multi-user.target
+# WantedBy=default.target
