@@ -1,17 +1,13 @@
 #! /usr/bin/python
 
-#This script has an output intended to be human readable and digestable, such as in a demonstration. If parsing published data, refer to other version of script.
-
 import time
-from datetime import datetime
-import pytz
 import board
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 import paho.mqtt.client as mqtt
 import logging
 import PMConfiguration as config
 
-#import variables from configuration file
+#define the topic
 topic = config.topic
 Broker = config.broker
 Load1 = config.load1
@@ -20,7 +16,6 @@ Load3 = config.load3
 CA_Certs = config.cacert
 Certfile = config.certfile
 Keyfile = config.keyfile
-Timezone = config.timezone
 
 # define on_connect function
 def on_connect(client, userdata, flags, rc):
@@ -98,7 +93,7 @@ ina3.bus_voltage_range = BusVoltageRange.RANGE_16V
 
 # measure and display loop
 while True:
-    currentDandT = datetime.now(pytz.timezone(Timezone))
+    currentDandT = time.ctime()
 
     bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
     shunt_voltage1 = ina1.shunt_voltage    # voltage between V+ and V- across the shunt
@@ -115,17 +110,7 @@ while True:
     power3 = ina3.power
     current3 = ina3.current                # current in mA
 
-    Str1 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
-    Str2 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
-    Str3 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
+    Str1 = "Timestamp: {}, Load1: {},  Load1ShuntVoltage(V):{:9.6f}, Load1Voltage(V): {:6.3f}, Load1Current(A): {:9.6f}, Load1Power(W): {:9.6f}, Load2: {}, Load2ShuntVoltage(V):{:9.6f}, Load2Voltage: {:6.3f}, Load2Current(A): {:9.6f}, Load2Power(W): {:9.6f}, Load3: {},  Load3ShuntVoltage(V): {:9.6f}, Load3Voltage(V): {:6.3f}, Load3Current(A): {:9.6f}, Load3Power(W): {:9.6f}"
 
-    Str4 = " "
-
-    client.publish(topic, Str4)
-    client.publish(topic, str(currentDandT))
-    client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
-    client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
-    client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
-    client.publish(topic, Str4)
-    client.publish(topic, Str4)
+    client.publish(topic, Str1.format((currentDandT),(Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1),(Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2),(Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
     time.sleep(5)

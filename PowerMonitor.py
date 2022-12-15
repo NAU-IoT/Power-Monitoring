@@ -1,7 +1,5 @@
 #! /usr/bin/python
 
-#This script has a Comma Separated Value publishing format for parsing. This is inteded for Grafana to interpret and plot data.
-
 import time
 from datetime import datetime
 import pytz
@@ -10,8 +8,12 @@ from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 import paho.mqtt.client as mqtt
 import logging
 import PMConfiguration as config
+import logging
 
-#define the topic
+#enable logging
+logging.basicConfig(level=logging.DEBUG)
+
+#import variables from config file
 topic = config.topic
 Broker = config.broker
 Load1 = config.load1
@@ -21,6 +23,7 @@ CA_Certs = config.cacert
 Certfile = config.certfile
 Keyfile = config.keyfile
 Timezone = config.timezone
+Sleeptime = config.sleeptime
 
 # define on_connect function
 def on_connect(client, userdata, flags, rc):
@@ -34,7 +37,7 @@ def on_publish(client, userdata, mid):
     """
       Callback function when topic is published.
     """
-    logging.info("Data published successfully.")
+    #logging.info("Data published successfully.")
 
 # define on_subscribe function
 def on_subscribe(client, userdata, mid, granted_qos):
@@ -99,7 +102,6 @@ ina3.bus_voltage_range = BusVoltageRange.RANGE_16V
 # measure and display loop
 while True:
     currentDandT = datetime.now(pytz.timezone(Timezone))
-    timestr = str(currentDandT)
 
     bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
     shunt_voltage1 = ina1.shunt_voltage    # voltage between V+ and V- across the shunt
@@ -116,8 +118,27 @@ while True:
     power3 = ina3.power
     current3 = ina3.current                # current in mA
 
-    Str1 = "Timestamp: {}, Load1: {},  Load1ShuntVoltage(V):{:9.6f}, Load1Voltage(V): {:6.3f}, Load1Current(A): {:9.6f}, Load1Power(W): {:9.6f}, Load2: {}, Load2ShuntVoltage(V):{:9.6f}, Load2Voltage: {:6.3f}, Load2Current(A): {:9.6f}, Load2Power(W): {:9.6f}, Load3: {},  Load3ShuntVoltage(V): {:9.6f}, Load3Voltage(V): {:6.3f}, Load3Current(A): {:9.6f}, Load3Power(W): {:9.6f}"
+    Str1 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
+    Str2 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
+    Str3 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
 
-    client.publish(topic, Str1.format((timestr),(Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1),(Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2),(Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
-    time.sleep(5)
+    Str4 = " "
 
+#put logging debug message here with data published to log (include topic name)
+    logging.debug("\n\npublishing data to topic: {}\n".format(topic))
+
+    logging.debug(str(currentDandT))
+    logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+    logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+    logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    logging.debug("-"*100)
+
+#publish data to topic
+    client.publish(topic, Str4)
+    client.publish(topic, str(currentDandT))
+    client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+    client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+    client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    client.publish(topic, Str4)
+    client.publish(topic, Str4)
+    time.sleep(Sleeptime)

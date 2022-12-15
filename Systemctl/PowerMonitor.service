@@ -5,7 +5,7 @@ Description=Power Monitor
 [Service]
 Type=simple
 # WorkingDirectory=/code/python/myapp
-ExecStart=/home/mwc72/PowerMonitor/PowerMonitor.sh
+ExecStart=/home/mwc72/Power-Monitoring/Systemctl/PowerMonitor.sh
 # User=do-user
 
 [Install]
