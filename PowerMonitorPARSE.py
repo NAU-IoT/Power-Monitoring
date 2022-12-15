@@ -48,7 +48,7 @@ def publish(self, topic, data, qos=1, retain=False):
     """
       Publish to a topic.
     """
-    logging.info("Publishing to topic %s" % topic)
+    #logging.info("Publishing to topic %s" % topic)
     self.client.publish(topic, data, qos=qos, retain=retain)
 
 
@@ -111,7 +111,17 @@ while True:
     power3 = ina3.power
     current3 = ina3.current                # current in mA
 
+    #put logging debug message here with data published to log (include topic name)
+    logging.debug("\n\npublishing data to topic: {}\n".format(topic))
+
+    logging.debug(str(currentDandT))
+    logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+    logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+    logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    logging.debug("-"*100)
+    
     Str1 = "Timestamp: {}, Load1: {},  Load1ShuntVoltage(V):{:9.6f}, Load1Voltage(V): {:6.3f}, Load1Current(A): {:9.6f}, Load1Power(W): {:9.6f}, Load2: {}, Load2ShuntVoltage(V):{:9.6f}, Load2Voltage: {:6.3f}, Load2Current(A): {:9.6f}, Load2Power(W): {:9.6f}, Load3: {},  Load3ShuntVoltage(V): {:9.6f}, Load3Voltage(V): {:6.3f}, Load3Current(A): {:9.6f}, Load3Power(W): {:9.6f}"
 
     client.publish(topic, Str1.format((currentDandT),(Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1),(Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2),(Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    
     time.sleep(Timesleep)
