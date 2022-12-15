@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # cd /code/python/myapp
-python3 /home/mwc72/Power-Monitoring/PowerMonitor.py >> /home/mwc72/Power-Monitoring/logs/PowerMonitor.log 2>&1
+python3 /SOME/PATH/TO/PowerMonitor.py >> /SOME/PATH/TO/logs/PowerMonitor.log 2>&1
