@@ -8,7 +8,6 @@ from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 import paho.mqtt.client as mqtt
 import logging
 import PMConfiguration as config
-import logging
 
 #enable logging
 logging.basicConfig(level=logging.DEBUG)
