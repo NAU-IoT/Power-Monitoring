@@ -113,6 +113,22 @@
   
   ## Implementing the script as a service
   
-  - Create logs directory inside of Power-Monitoring directory `mkdir logs`
+  - Create a systemd entry 
+      - Change into Systemctl directory `cd Power-Monitoring/Systemctl` 
+      - Modify line 8 of PowerMonitor.service to reflect the correct path `nano PowerMonitor.service`
+      - Copy the .service file to correct location `sudo cp PowerMonitor.service /etc/systemd/system`
+  - Create logs directory inside of the Power-Monitoring directory `mkdir logs`
   - Modify PowerMonitor.sh to include the correct paths (located inside of the Systemctl directory) `nano PowerMonitor.sh`
-  - 
+  - Set file permissions for PowerMonitor.sh `sudo chmod 744 Power-Monitoring/Systemctl/PowerMonitor.sh`
+      - If this step is unsuccessful, here are potential solutions:
+         - Change permissions further `sudo chmod 755 Power-Monitoring/Systemctl/PowerMonitor.sh`
+         - Change permissions for the directory as well `sudo chmod 755 Power-Monitoring`
+  - Enable the service 
+      - `sudo systemctl daemon-reload`
+      - `sudo systemctl enable PowerMonitor.service`
+      
+  - Start the service `sudo systemctl start PowerMonitor.service`
+  
+  - Check the status of the service `sudo systemctl status PowerMonitor.service`
+  
+  - Done! The service should now run on boot. 
