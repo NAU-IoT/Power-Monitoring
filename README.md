@@ -43,8 +43,9 @@
 
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
 
-  - Install the GPIO package using `sudo apt install python3-lgpio` (ubuntu GPIO support)
-    - If not on ubuntu: `apt-get install rpi.gpio`
+  - Install the GPIO package using `sudo apt install python3-lgpio` (Ubuntu GPIO support)
+   
+  - Install another GPIO package (HAT uses this package): `apt-get install rpi.gpio`
 
   - Install mosquitto service 
     - `sudo apt-get install mosquitto mosquitto-clients`
