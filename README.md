@@ -38,6 +38,7 @@
 ## Dependencies
 
   - Ensure I2C is enabled on the RaspberryPi
+  - If pyhton 3 is installed, but pip is not, install pip using `sudo apt-get -y install python3-pip`
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
   - Install the GPIO package using `sudo apt install python3-lgpio` (ubuntu GPIO support)
     - If not on ubuntu: `apt-get install rpi.gpio`
