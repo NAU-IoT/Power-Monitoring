@@ -8,6 +8,7 @@
   
   The HAT will be collecting data from the terminals and the data will be published remotely by using MQTT.
 
+  Details on how to run the script as a service that runs on boot are included as well. 
 
 ## Components
 
@@ -108,3 +109,10 @@
     WITH TLS: `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
   
   - Done!
+  
+  
+  ## Implementing the script as a service
+  
+  - Create logs directory inside of Power-Monitoring directory `mkdir logs`
+  - Modify PowerMonitor.sh to include the correct paths (located inside of the Systemctl directory) `nano PowerMonitor.sh`
+  - 
