@@ -45,7 +45,7 @@
 
   - Install the GPIO package using `sudo apt install python3-lgpio` (Ubuntu GPIO support)
    
-  - Install another GPIO package (HAT uses this package): `apt-get install rpi.gpio`
+  - Install another GPIO package (HAT uses this package): `sudo apt-get install rpi.gpio`
 
   - Install mosquitto service 
     - `sudo apt-get install mosquitto mosquitto-clients`
