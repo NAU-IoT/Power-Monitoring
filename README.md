@@ -83,7 +83,7 @@
   - Install the paho.mqtt library 
     - `git clone https://github.com/eclipse/paho.mqtt.python`
     - `cd paho.mqtt.python`
-    - `python3 setup.py install`
+    - `sudo python3 setup.py install`
 
   - Install the pytz timezone library
     - `pip install pytz`
