@@ -38,18 +38,53 @@
 ## Dependencies
 
   - Ensure I2C is enabled on the RaspberryPi
+
   - If pyhton 3 is installed, but pip is not, install pip using `sudo apt-get -y install python3-pip`
+
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
+
   - Install the GPIO package using `sudo apt install python3-lgpio` (ubuntu GPIO support)
     - If not on ubuntu: `apt-get install rpi.gpio`
+
   - Install mosquitto service 
     - `sudo apt-get install mosquitto mosquitto-clients`
     - `sudo systemctl enable mosquitto`
     - check if mosquitto is running `sudo systemctl status mosquitto`
+
+  - Create your own mosquitto configuration file:
+    - `cd /etc/mosquitto/conf.d`
+    - `sudo nano YOUR_FILE_NAME.conf`
+    - paste these lines for insecure connection:
+        
+       ```
+       allow_anonymous true
+        
+       listener 1883
+       ```
+    - paste these lines for secure connection:
+       
+       ```
+       allow_anonymous true
+        
+       listener 8883
+        
+       require_certificate true
+       
+       cafile /SOME/PATH/TO/ca.crt
+        
+       certfile /SOME/PATH/TO/server.crt
+        
+       keyfile /SOME/PATH/TO/server.key
+       ``` 
+    - Restart mosquitto service to recognize conf changes `sudo systemctl restart mosquitto.service`  
+    - Check status to ensure mosquitto restarted successfully `sudo systemctl status mosquitto.service`
+    - *refer to https://mosquitto.org/man/mosquitto-conf-5.html for conf file documentation*
+
   - Install the paho.mqtt library 
     - `git clone https://github.com/eclipse/paho.mqtt.python`
     - `cd paho.mqtt.python`
     - `python3 setup.py install`
+
   - Install the pytz timezone library
     - `pip install pytz`
 
