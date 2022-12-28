@@ -93,7 +93,7 @@
 
   - Clone github repository `git clone https://github.com/NAU-IoT/Power-Monitoring.git`
   - Change into Power Monitor directory `cd Power-Monitoring`
-  - Modify PMConfiguration.py variable names and paths according to your implementation
+  - Modify PMConfiguration.py variable names and paths according to your implementation `nano PMConfiguration.py`
   - Set permissions to make the script executable by typing `chmod +x PowerMonitor.py` in the command line
   - To use TLS set, uncomment lines 66-69 and change 1883 to 8883 on line 72 
   - IF USING TLS SET: ensure keyfile has the correct permissions for the user to run the script without error
