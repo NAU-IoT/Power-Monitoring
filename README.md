@@ -44,7 +44,7 @@
 
   - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
 
-  - Install the GPIO package using `sudo apt install python3-lgpio` (Ubuntu GPIO support)
+  - Install the GPIO package using `sudo apt install python3-lgpio` (Ubuntu GPIO support for versions 22.04+)
    
   - Install another GPIO package (HAT uses this package): `sudo apt-get install rpi.gpio`
 
