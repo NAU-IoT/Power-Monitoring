@@ -6,6 +6,8 @@ Description=Power Monitor
 Type=simple
 # WorkingDirectory=/code/python/myapp
 ExecStart=/SOME/PATH/TO/EXEC.sh
+Restart=on-failure
+RestartSec=10
 # User=do-user
 
 [Install]
