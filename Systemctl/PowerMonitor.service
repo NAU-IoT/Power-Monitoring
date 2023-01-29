@@ -1,5 +1,6 @@
 [Unit]
 After=network.service
+After=mosquitto.service
 Description=Power Monitor
 
 [Service]
