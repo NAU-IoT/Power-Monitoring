@@ -18,6 +18,9 @@ Broker = config.broker
 Load1 = config.load1
 Load2 = config.load2
 Load3 = config.load3
+PrintLoad1 = config.printload1
+PrintLoad2 = config.printload2
+PrintLoad3 = config.printload3
 CA_Certs = config.cacert
 Certfile = config.certfile
 Keyfile = config.keyfile
@@ -127,17 +130,24 @@ while True:
     logging.debug("\n\npublishing data to topic: {}\n".format(topic))
 
     logging.debug(str(currentDandT))
-    logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
-    logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
-    logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    if(PrintLoad1):
+        logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+    if(PrintLoad2):
+        logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+    if(PrintLoad3):
+        logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
     logging.debug("-"*100)
 
 #publish data to topic
     client.publish(topic, Str4)
     client.publish(topic, str(currentDandT))
-    client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
-    client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
-    client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    if(PrintLoad1):
+        client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+    if(PrintLoad2):
+        client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+    if(PrintLoad3):
+        client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
     client.publish(topic, Str4)
     client.publish(topic, Str4)
     time.sleep(Sleeptime)
+
