@@ -83,9 +83,7 @@
     - *refer to https://mosquitto.org/man/mosquitto-conf-5.html for conf file documentation*
 
   - Install the paho.mqtt library 
-    - `git clone https://github.com/eclipse/paho.mqtt.python`
-    - `cd paho.mqtt.python`
-    - `sudo python3 setup.py install`
+    - `sudo pip install paho-mqtt`
 
   - Install the pytz timezone library
     - `pip install pytz`
