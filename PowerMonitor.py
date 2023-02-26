@@ -8,12 +8,14 @@ from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 import paho.mqtt.client as mqtt
 import logging
 import PMConfiguration as config
+import csv
 
 #enable logging
 logging.basicConfig(level=logging.DEBUG)
 
 #import variables from config file
 topic = config.topic
+DataPath = config.datastorage
 Broker = config.broker
 Load1 = config.load1
 Load2 = config.load2
