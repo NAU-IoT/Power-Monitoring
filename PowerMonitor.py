@@ -100,6 +100,19 @@ ina3.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S
 ina3.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S
 ina3.bus_voltage_range = BusVoltageRange.RANGE_16V
 
+header = ['DateAndTime', 'LoadName', 'ShuntVoltage', 'LoadVoltage', 'Current', 'Power']
+
+timestr = time.strftime("%Y%m%d") #current date for filename
+base = "PowerMonitor-" #base name of file
+extension = ".csv" #.csv extension for filename
+filename = base + timestr + extension #combine into filename
+datastorage = DataPath + filename #append filename to end of DataPath to create one variable
+
+file = open(datastorage, 'w')
+writer = csv.writer(file)
+
+# write the header
+writer.writerow(header)
 
 # measure and display loop
 while True:
@@ -149,5 +162,31 @@ while True:
         client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
     client.publish(topic, Str4)
     client.publish(topic, Str4)
+
+
+#write data to csv file
+    data1 = [currentDandT, Load1, round(shunt_voltage1, 6), round(bus_voltage1, 3), round(current1/1000, 6), round(power1, 6)]
+    data2 = [currentDandT, Load2, round(shunt_voltage2, 6), round(bus_voltage2, 3), round(current2/1000, 6), round(power2, 6)]
+    data3 = [currentDandT, Load3, round(shunt_voltage3, 6), round(bus_voltage3, 3), round(current3/1000, 6), round(power3, 6)]
+    if(PrintLoad1):
+        writer.writerow(data1)
+    if(PrintLoad2):
+        writer.writerow(data2)
+    if(PrintLoad3):
+        writer.writerow(data3)
+
+    file.flush() #flush data to disk
+    timestr = time.strftime("%Y%m%d") #update current date for newfilename
+    newfilename = base + timestr + extension #combine into new filename
+
+#test if it is a new day, i.e. newfile name has the new date in it
+    if(newfilename != filename):
+        f.close()       #close old file
+        filename = newfilename  #set filename to new date filename
+        datastorage = DataPath + filename #update variable
+        file = open(datastorage, 'w')   #open new file with current date
+        writer = csv.writer(file)
+        writer.writerow(header) #write the header to the new file
+
     time.sleep(Sleeptime)
 
