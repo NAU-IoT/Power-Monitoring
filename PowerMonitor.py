@@ -110,11 +110,20 @@ extension = ".csv" #.csv extension for filename
 filename = base + timestr + extension #combine into filename
 datastorage = DataPath + filename #append filename to end of DataPath to create one variable
 
-file = open(datastorage, 'w')
-writer = csv.writer(file)
+testforfile = os.path.exists(datastorage)
 
-# write the header
-writer.writerow(header)
+if(testforfile):
+
+    file = open(datastorage, 'a')
+    writer = csv.writer(file)
+
+else:
+    file = open(datastorage, 'w')
+    writer = csv.writer(file)
+
+    # write the header
+    writer.writerow(header)
+
 
 # measure and display loop
 while True:
@@ -130,7 +139,7 @@ while True:
     power2 = ina2.power
     current2 = ina2.current                # current in mA
 
-    bus_voltage3 = ina3.bus_voltage        # voltage on V- (load side)
+   bus_voltage3 = ina3.bus_voltage        # voltage on V- (load side)
     shunt_voltage3 = ina3.shunt_voltage    # voltage between V+ and V- across the shunt
     power3 = ina3.power
     current3 = ina3.current                # current in mA
