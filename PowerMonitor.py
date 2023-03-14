@@ -16,6 +16,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 #import variables from config file
 topic = config.topic
+Port = config.port
 DataPath = config.datastorage
 Broker = config.broker
 Load1 = config.load1
@@ -80,7 +81,7 @@ client.will_set(topic, b'Monitoring script has terminated')
 #               keyfile=Keyfile)
 
 # create connection, the three parameters are broker address, broker port numbe>
-client.connect(Broker, 1883, 60)
+client.connect(Broker, Port, 60)
 
 
 i2c_bus = board.I2C()
