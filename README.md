@@ -34,7 +34,21 @@
 
    Wired through the power monitoring hat to monitor power output
 
+# Running with Docker
 
+  - Install docker:
+    - `sudo apt install docker.io`
+    - `sudo snap install docker`
+    - Check if docker is functioning `sudo docker run hello-world`
+  - Obtain image from online repository `docker pull mwc72/powermonitor`
+  - Run image in container ``
+
+
+
+
+
+
+# Running with Python & Systemctl
 
 ## Dependencies
 
