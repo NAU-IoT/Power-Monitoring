@@ -40,9 +40,15 @@
     - `sudo apt install docker.io`
     - `sudo snap install docker`
     - Check if docker is functioning `sudo docker run hello-world`
-  - Obtain image from online repository `docker pull mwc72/powermonitor`
-  - Run image in container ``
-
+  - Clone repository to get Dockerfile and configuration files `git clone https://github.com/NAU-IoT/Power-Monitoring.git`
+  - Change into docker directory `cd Power-Monitoring/pm-docker`
+  - Modify PMConfiguration.py to match your current implementation `nano PMConfiguration.py`
+  - Build docker image in current directory `docker build -t powermonitor .` this will take a while
+  - Execute docker container `docker run --privileged -v YOUR_VOLUME_NAME:/Data -p YOUR_PORT_NUMBER:CONTAINER_PORT_NUMBER -t -i -d --restart unless-stopped powermonitor`
+  - Verify container is running `docker ps`
+  - Done!
+  - To enter the container `docker exec -it CONTAINER_ID /bin/bash`
+    - This can be done to check log files or modify the container without rebuilding/restarting
 
 
 
