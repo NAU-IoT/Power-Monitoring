@@ -34,7 +34,7 @@ ADD PowerMonitor.py /PowerMonitor.py
 
 ADD PowerMonitor.sh /PowerMonitor.sh
 
-ADD Data /Data
+RUN mkdir Data
 
 RUN mkdir -p /Data/logs
 
