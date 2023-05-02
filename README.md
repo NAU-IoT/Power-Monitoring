@@ -44,7 +44,7 @@
   - Modify PMConfiguration.py to match your current implementation `nano PMConfiguration.py`
     - Refer to comments for necessary changes
   - Build docker image in current directory `docker build -t powermonitor .` this will take a while
-  - Create a volume to store data in a convenient location `sudo docker volume create --driver local 
+  - Create a volume to store data in a convenient location `docker volume create --driver local 
     --opt type=none 
     --opt device=/some/local/directory 
     --opt o=bind 
