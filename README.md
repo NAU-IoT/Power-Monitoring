@@ -50,6 +50,7 @@
     --opt o=bind 
     YOUR_VOLUME_NAME`
   - Execute docker container `docker run --privileged -v YOUR_VOLUME_NAME:/Data -p YOUR_PORT_NUMBER:CONTAINER_PORT_NUMBER -t -i -d --restart unless-stopped powermonitor`
+    - Note for IoT Team: Your_port_number could be 31883, container_port_number should be 31883
   - Verify container is running `docker ps`
   - Done!
   - To enter the container `docker exec -it CONTAINER_ID /bin/bash`
