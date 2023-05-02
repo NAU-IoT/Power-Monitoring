@@ -42,6 +42,7 @@
   - Clone repository to get Dockerfile and configuration files `git clone https://github.com/NAU-IoT/Power-Monitoring.git`
   - Change into docker directory `cd Power-Monitoring/pm-docker`
   - Modify PMConfiguration.py to match your current implementation `nano PMConfiguration.py`
+    - Refer to comments for necessary changes
   - Build docker image in current directory `docker build -t powermonitor .` this will take a while
   - Create a volume to store data in a convenient location `sudo docker volume create --driver local 
     --opt type=none 
