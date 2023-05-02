@@ -38,7 +38,6 @@
 
   - Install docker:
     - `sudo apt install docker.io`
-    - `sudo snap install docker`
     - Check if docker is functioning `sudo docker run hello-world`
   - Clone repository to get Dockerfile and configuration files `git clone https://github.com/NAU-IoT/Power-Monitoring.git`
   - Change into docker directory `cd Power-Monitoring/pm-docker`
