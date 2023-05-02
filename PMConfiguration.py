@@ -1,8 +1,8 @@
 topic = "PowerMonitoring" #topic name
 port = "YOUR_MQTT_PORT_NUMBER" #port to be used by mqtt
 datastorage = "/SOME/PATH/TO/Data/" #path to store the local csv files, make storage directories ahead of time
-broker = "YOUR BROKER NAME" #broker name or broker IP
-load1 = "YOUR LOAD 1"  #load connected to 0x40 terminals
+broker = "YOUR BROKER NAME" #broker name or broker IP; IoT Team: use localhost, supervisor IP address, or supervisor DNS name 
+load1 = "YOUR LOAD 1"  #load connected to 0x40 terminals; IoT Team: use IOBoard IP address or IOBoard DNS name
 load2 = "YOUR LOAD 2"           #load connected to the 0x41 terminals
 load3 = "YOUR LOAD 3"           #load connected to the 0x42 terminals
 printload1 = True #boolean value to indicate if load1 is connected, if it is set to false the data will not be printed to logs
