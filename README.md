@@ -43,7 +43,7 @@
   - Change into docker directory `cd Power-Monitoring/pm-docker`
   - Modify PMConfiguration.py to match your current implementation `nano PMConfiguration.py`
     - Refer to comments for necessary changes
-  - Build docker image in current directory `docker build -t powermonitor .` this will take a while
+  - Build docker image in Power-Monitoring/pm-docker directory `docker build -t powermonitor .` this will take a while
   - Create a directory in a convenient location to store the docker volume
   - Create a volume to store data inside the directory created in the previous step `docker volume create --driver local 
     --opt type=none 
