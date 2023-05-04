@@ -14,7 +14,7 @@ RUN apt-get install -y python3-lgpio
 
 RUN pip install rpi.gpio
 
-RUN apt install -y software-properties-common
+RUN apt-get install -y software-properties-common
 
 RUN apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
 
