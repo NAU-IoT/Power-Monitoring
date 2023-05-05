@@ -28,6 +28,12 @@ RUN pip3 install paho-mqtt
 
 RUN pip install pytz
 
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install tzdata
+
+ENV TZ=America/Phoenix
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 ADD PMConfiguration.py /PMConfiguration.py
 
 ADD PowerMonitor.py /PowerMonitor.py
