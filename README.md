@@ -43,6 +43,7 @@
   - Change into docker directory `cd Power-Monitoring/pm-docker`
   - Modify PMConfiguration.py to match your current implementation `nano PMConfiguration.py`
     - Refer to comments for necessary changes
+  - OPTIONAL: To change the docker containers time zone, edit line 33 in the Dockerfile. A list of acceptable time zones can be found at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
   - Build docker image in Power-Monitoring/pm-docker directory `docker build -t powermonitor .` this will take a while
   - Create a directory in a convenient location to store the docker volume. For example: `mkdir -p Data/PMonData`
   - Create a volume to store data inside the directory created in the previous step `docker volume create --driver local 
