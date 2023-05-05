@@ -47,7 +47,7 @@
   - Create a directory in a convenient location to store the docker volume. For example: `mkdir -p Data/PMonData`
   - Create a volume to store data inside the directory created in the previous step `docker volume create --driver local 
     --opt type=none 
-    --opt device=/some/local/directory 
+    --opt device=/SOME/LOCAL/DIRECTORY 
     --opt o=bind 
     YOUR_VOLUME_NAME`
   - Execute docker container in Power-Monitoring/pm-docker directory `docker run --privileged -v YOUR_VOLUME_NAME:/Data -p YOUR_PORT_NUMBER:CONTAINER_PORT_NUMBER -t -i -d --restart unless-stopped powermonitor`
