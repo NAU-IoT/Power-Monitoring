@@ -55,8 +55,21 @@
     - Note for IoT Team: Your_port_number could be 31883, container_port_number should be 31883
   - Verify container is running `docker ps`
   - Done!
+  
+  ### Notes
+  - To see data being published, subscribe to the specified topic using command: 
+    
+    WITHOUT TLS: `mosquitto_sub -p PORT_NUMBER -t YOUR_TOPIC -h YOUR_BROKER_IP` IoT Team: PORT_NUMBER should be 31883 (number in PMConfiguration.py)
+    
+    WITH TLS: `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
+    
+    - Expected output format:
+    <img width="841" alt="Screen Shot 2023-05-04 at 7 51 34 PM" src="https://user-images.githubusercontent.com/72172361/236368404-8bf43963-de3c-4c1a-b912-72a7be026c1f.png">
+
+    
   - To enter the container `docker exec -it CONTAINER_ID /bin/bash`
     - This can be done to check log files or modify the container without rebuilding/restarting
+
     
  ### Common Errors
  
