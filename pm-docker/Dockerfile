@@ -48,6 +48,8 @@ RUN chmod +x /PowerMonitor.py
 
 RUN chmod +x /PowerMonitor.sh
 
+# sleep command to give mosquitto time to start before using.
 CMD service mosquitto start \
+    && sleep 5 \
     && ./PowerMonitor.sh \
     && bash
