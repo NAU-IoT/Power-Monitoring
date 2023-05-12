@@ -194,7 +194,7 @@ while True:
 
 #test if it is a new day, i.e. newfile name has the new date in it
     if(newfilename != filename):
-        f.close()       #close old file
+        file.close()       #close old file
         filename = newfilename  #set filename to new date filename
         datastorage = DataPath + filename #update variable
         file = open(datastorage, 'w')   #open new file with current date
