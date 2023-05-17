@@ -129,6 +129,19 @@ else:
 
 # measure and display loop
 while True:
+    
+    timestr = time.strftime("%Y%m%d") #update current date for newfilename
+    newfilename = base + timestr + extension #combine into new filename
+
+#test if it is a new day, i.e. newfile name has the new date in it
+    if(newfilename != filename):
+        file.close()       #close old file
+        filename = newfilename  #set filename to new date filename
+        datastorage = DataPath + filename #update variable
+        file = open(datastorage, 'w')   #open new file with current date
+        writer = csv.writer(file)
+        writer.writerow(header) #write the header to the new file
+    
     currentDandT = datetime.now(pytz.timezone(Timezone))
 
     bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
@@ -189,17 +202,6 @@ while True:
         writer.writerow(data3)
 
     file.flush() #flush data to disk
-    timestr = time.strftime("%Y%m%d") #update current date for newfilename
-    newfilename = base + timestr + extension #combine into new filename
-
-#test if it is a new day, i.e. newfile name has the new date in it
-    if(newfilename != filename):
-        file.close()       #close old file
-        filename = newfilename  #set filename to new date filename
-        datastorage = DataPath + filename #update variable
-        file = open(datastorage, 'w')   #open new file with current date
-        writer = csv.writer(file)
-        writer.writerow(header) #write the header to the new file
 
     time.sleep(Sleeptime)
 
