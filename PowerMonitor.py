@@ -129,7 +129,7 @@ else:
 
 # measure and display loop
 while True:
-    
+
     timestr = time.strftime("%Y%m%d") #update current date for newfilename
     newfilename = base + timestr + extension #combine into new filename
 
@@ -141,7 +141,7 @@ while True:
         file = open(datastorage, 'w')   #open new file with current date
         writer = csv.writer(file)
         writer.writerow(header) #write the header to the new file
-    
+
     currentDandT = datetime.now(pytz.timezone(Timezone))
 
     bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
@@ -170,11 +170,20 @@ while True:
 
     logging.debug(str(currentDandT))
     if(PrintLoad1):
-        logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+        if((shunt_voltage1 != None) and (bus_voltage1 != None) and (current1 != None) and (power1 != None)):
+           logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+        else:
+           logging.debug("\n Load1 data contained null value")
     if(PrintLoad2):
-        logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+        if((shunt_voltage2 != None) and (bus_voltage2 != None) and (current2 != None) and (power2 != None)):
+           logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+        else:
+           logging.debug("\n Load2 data contained null value")
     if(PrintLoad3):
-        logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+        if((shunt_voltage3 != None) and (bus_voltage3 != None) and (current3 != None) and (power3 != None)):
+           logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+        else:
+           logging.debug("\n Load 3 data contained null value")
     logging.debug("-"*100)
 
 #publish data to topic
@@ -194,14 +203,13 @@ while True:
     data1 = [currentDandT, Load1, round(shunt_voltage1, 6), round(bus_voltage1, 3), round(current1/1000, 6), round(power1, 6)]
     data2 = [currentDandT, Load2, round(shunt_voltage2, 6), round(bus_voltage2, 3), round(current2/1000, 6), round(power2, 6)]
     data3 = [currentDandT, Load3, round(shunt_voltage3, 6), round(bus_voltage3, 3), round(current3/1000, 6), round(power3, 6)]
-    if(PrintLoad1):
+    if(PrintLoad1 and (shunt_voltage1 != None) and (bus_voltage1 != None) and (current1 != None) and (power1 != None)):
         writer.writerow(data1)
-    if(PrintLoad2):
+    if(PrintLoad2 and (shunt_voltage2 != None) and (bus_voltage2 != None) and (current2 != None) and (power2 != None)):
         writer.writerow(data2)
-    if(PrintLoad3):
+    if(PrintLoad3 and (shunt_voltage3 != None) and (bus_voltage3 != None) and (current3 != None) and (power3 != None)):
         writer.writerow(data3)
 
     file.flush() #flush data to disk
 
     time.sleep(Sleeptime)
-
