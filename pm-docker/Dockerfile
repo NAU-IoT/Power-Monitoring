@@ -58,7 +58,8 @@ RUN chmod +x /PowerMonitor.sh
 CMD service mosquitto start \
     && sleep 5 \
     && cron \
-#   && ./PowerMonitor.sh \ # Uncomment this line and comment out the above line for debugging, otherwise script will not execute until midnight
+# Uncomment below line and comment out the above line for debugging, otherwise script will not execute until cron execution
+#   && ./PowerMonitor.sh \ 
     && bash
 
 
