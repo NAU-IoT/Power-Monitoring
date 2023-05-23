@@ -18,9 +18,9 @@ RUN apt-get install -y software-properties-common
 
 RUN apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
 
-RUN apt-get update
-
 RUN apt-get install -y mosquitto mosquitto-clients
+
+RUN apt-get -y install cron
 
 COPY mosquitto.conf /etc/mosquitto/
 
@@ -40,9 +40,15 @@ ADD PowerMonitor.py /PowerMonitor.py
 
 ADD PowerMonitor.sh /PowerMonitor.sh
 
-RUN mkdir Data
+ADD crontab /etc/cron.d/simple-cron
+
+RUN touch /var/log/cron.log
+
+RUN mkdir -p /Data
 
 RUN mkdir -p /Data/logs
+
+RUN chmod 0644 /etc/cron.d/simple-cron
 
 RUN chmod +x /PowerMonitor.py
 
@@ -51,5 +57,8 @@ RUN chmod +x /PowerMonitor.sh
 # sleep command to give mosquitto time to start before using.
 CMD service mosquitto start \
     && sleep 5 \
-    && ./PowerMonitor.sh \
+    && cron \
+#   && ./PowerMonitor.sh \ # Uncomment this line and comment out the above line for debugging, otherwise script will not execute until midnight
     && bash
+
+
