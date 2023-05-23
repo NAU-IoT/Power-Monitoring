@@ -7,6 +7,6 @@
 # |  |  |  |  |
 # *  *  *  *  * user-name command to be executed
 
-#execute powermonitor.sh at the third minute of every hour
-3 * * * * root /PowerMonitor.sh
+#execute powermonitor.sh at the first minute of every hour
+0 * * * * root /PowerMonitor.sh
 # An empty line is required at the end of this file for a valid cron file.
