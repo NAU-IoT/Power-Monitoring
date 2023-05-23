@@ -203,11 +203,11 @@ while True:
     data1 = [currentDandT, Load1, round(shunt_voltage1, 6), round(bus_voltage1, 3), round(current1/1000, 6), round(power1, 6)]
     data2 = [currentDandT, Load2, round(shunt_voltage2, 6), round(bus_voltage2, 3), round(current2/1000, 6), round(power2, 6)]
     data3 = [currentDandT, Load3, round(shunt_voltage3, 6), round(bus_voltage3, 3), round(current3/1000, 6), round(power3, 6)]
-    if(PrintLoad1 and (shunt_voltage1 != None) and (bus_voltage1 != None) and (current1 != None) and (power1 != None)):
+    if(PrintLoad1 and (None not in data1)):
         writer.writerow(data1)
-    if(PrintLoad2 and (shunt_voltage2 != None) and (bus_voltage2 != None) and (current2 != None) and (power2 != None)):
+    if(PrintLoad2 and (None not in data2)):
         writer.writerow(data2)
-    if(PrintLoad3 and (shunt_voltage3 != None) and (bus_voltage3 != None) and (current3 != None) and (power3 != None)):
+    if(PrintLoad3 and (None not in data3)):
         writer.writerow(data3)
 
     file.flush() #flush data to disk
