@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Find the process ID (PID) of the running PowerMonitor script
+# Find the process ID of the running PowerMonitor script
 pid=$(pgrep -f PowerMonitor.py)
 
 # Kill the process if it is running
