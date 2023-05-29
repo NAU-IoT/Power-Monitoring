@@ -159,6 +159,26 @@ while True:
     power3 = ina3.power
     current3 = ina3.current                # current in mA
 
+    # check if shunt v, load v, or current are 0
+    if(shunt_voltage1 < .0001):
+        shunt_voltage1 = 0.0
+    if(bus_voltage1 < .01):
+        bus_voltage1 = 0.0
+    if(current1 < .001):
+        current1 = 0.0
+    if(shunt_voltage2 < .0001):
+        shunt_voltage2 = 0.0
+    if(bus_voltage2 < .01):
+        bus_voltage2 = 0.0
+    if(current2 < .001):
+        current2 = 0.0
+    if(shunt_voltage3 < .0001):
+        shunt_voltage3 = 0.0
+    if(bus_voltage3 < .01):
+        bus_voltage3 = 0.0
+    if(current3 < .001):
+        current3 = 0.0
+    
     Str1 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
     Str2 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
     Str3 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
@@ -170,20 +190,20 @@ while True:
 
     logging.debug(str(currentDandT))
     if(PrintLoad1):
-        if((shunt_voltage1 != None) and (bus_voltage1 != None) and (current1 != None) and (power1 != None)):
+        if((shunt_voltage1 != None) and (PowerMonitor-20230529.cs != None) and (current1 != None) and (power1 != None)):
            logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
         else:
-           logging.debug("\n Load1 data contained null value")
+           logging.debug(f"\n {Load1} data contained null value")
     if(PrintLoad2):
         if((shunt_voltage2 != None) and (bus_voltage2 != None) and (current2 != None) and (power2 != None)):
            logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
         else:
-           logging.debug("\n Load2 data contained null value")
+           logging.debug(f"\n {Load2} data contained null value")
     if(PrintLoad3):
         if((shunt_voltage3 != None) and (bus_voltage3 != None) and (current3 != None) and (power3 != None)):
            logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
         else:
-           logging.debug("\n Load 3 data contained null value")
+           logging.debug(f"\n {Load3} data contained null value")
     logging.debug("-"*100)
 
 #publish data to topic
