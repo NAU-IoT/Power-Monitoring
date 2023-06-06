@@ -78,23 +78,45 @@
   ### Notes
   - To see data being published, subscribe to the specified topic using command: 
     
-    WITHOUT TLS: `mosquitto_sub -p PORT_NUMBER -t YOUR_TOPIC -h YOUR_BROKER_IP` IoT Team: PORT_NUMBER should be 31883 (number in PMConfiguration.py)
+    WITHOUT TLS:
     
-    WITH TLS: `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
+    IoT Team: PORT_NUMBER should be 31883 (number in PMConfiguration.py)
+    ```
+    mosquitto_sub -p PORT_NUMBER -t YOUR_TOPIC -h YOUR_BROKER_IP
+    ```
     
-    - Expected output format:
+    Example command:
+    ```
+    mosquitto_sub -p 1883 -t HomeNetwork -h localhost
+    ```
+    
+    WITH TLS: 
+    ```
+    mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP
+    ```
+    
+    Example command:
+    ```
+    mosquitto_pub --cafile /home/michael/cafile.crt --cert /home/michael/certfile.crt --key /home/michael/keyfile.key -p 8883 -d -h localhost -t HomeNetwork
+    ```
+    
+    Expected output format:
     <img width="841" alt="Screen Shot 2023-05-04 at 7 51 34 PM" src="https://user-images.githubusercontent.com/72172361/236368404-8bf43963-de3c-4c1a-b912-72a7be026c1f.png">
 
     
-  - To enter the container `docker exec -it CONTAINER_ID /bin/bash`
+  - To enter the container:
     - This can be done to check log files or modify the container without rebuilding/restarting
-
+  ```
+  docker exec -it CONTAINER_ID /bin/bash
+  ```
     
  ### Common Errors
  
   - If error: `Got permission denied while trying to connect to the Docker daemon socket at unix ... connect: permission denied`
-    - Use `sudo usermod -aG docker $USER` , log out and ssh back into system
-
+    - Run command, then log out and ssh back into system:
+  ```
+  sudo usermod -aG docker $USER
+  ```
 
 
 
@@ -104,71 +126,143 @@
 
   - Ensure I2C is enabled on the RaspberryPi
 
-  - If pyhton 3 is installed, but pip is not, install pip using `sudo apt-get -y install python3-pip`
+  - If python 3 is installed, but pip is not, install pip using: 
+  ```
+  sudo apt-get -y install python3-pip
+  ```
 
-  - Use `sudo pip3 install adafruit-circuitpython-ina219` (required to run power monitoring HAT)
+  - Install package to run power monitoring HAT:
+  ```
+  sudo pip3 install adafruit-circuitpython-ina219
+  ``` 
 
-  - Install the GPIO package using `sudo apt install python3-lgpio` (Ubuntu GPIO support for versions 22.04+)
+  - Install the GPIO package (Ubuntu GPIO support for versions 22.04+):
+  ```
+  sudo apt install python3-lgpio
+  ```
    
-  - Install another GPIO package (HAT uses this package): `sudo apt-get install rpi.gpio`
+  - Install another GPIO package (HAT uses this package): 
+  ```
+  sudo apt-get install rpi.gpio
+  ```
 
-  - Install mosquitto service 
-    - `sudo apt-get install mosquitto mosquitto-clients`
-    - `sudo systemctl enable mosquitto`
-    - check if mosquitto is running `sudo systemctl status mosquitto`
+  - Install mosquitto service: 
+  ```
+  sudo apt-get install mosquitto mosquitto-clients
+  ```
+  ```
+  sudo systemctl enable mosquitto
+  ```
+  - Check if mosquitto is running: 
+  ```
+  sudo systemctl status mosquitto
+  ```
 
   - Create your own mosquitto configuration file:
-    - `cd /etc/mosquitto/conf.d`
-    - `sudo nano YOUR_FILE_NAME.conf`
-    - paste these lines for insecure connection:
+  ```
+  cd /etc/mosquitto/conf.d
+  ```
+  ```
+  sudo nano YOUR_FILE_NAME.conf
+  ```
+  - Paste these lines for insecure connection:
         
-       ```
-       allow_anonymous true
+  ```
+  allow_anonymous true
         
-       listener 1883
-       ```
-    - paste these lines for secure connection:
+  listener 1883
+  ```
+  - Paste these lines for secure connection:
        
-       ```
-       allow_anonymous true
+  ```
+  allow_anonymous true
         
-       listener 8883
+  listener 8883
         
-       require_certificate true
+  require_certificate true
        
-       cafile /SOME/PATH/TO/ca.crt
+  cafile /SOME/PATH/TO/ca.crt
         
-       certfile /SOME/PATH/TO/server.crt
+  certfile /SOME/PATH/TO/server.crt
         
-       keyfile /SOME/PATH/TO/server.key
-       ``` 
-    - Restart mosquitto service to recognize conf changes `sudo systemctl restart mosquitto.service`  
-    - Check status to ensure mosquitto restarted successfully `sudo systemctl status mosquitto.service`
-    - *refer to https://mosquitto.org/man/mosquitto-conf-5.html for conf file documentation*
+  keyfile /SOME/PATH/TO/server.key
+  ``` 
+  
+  - Restart mosquitto service to recognize conf changes: 
+  ```
+  sudo systemctl restart mosquitto.service
+  ```  
+  - Check status to ensure mosquitto restarted successfully: 
+  ```
+  sudo systemctl status mosquitto.service
+  ```
+  - *refer to https://mosquitto.org/man/mosquitto-conf-5.html for official conf file documentation*
 
-  - Install the paho.mqtt library 
-    - `sudo pip install paho-mqtt`
+  - Install the paho.mqtt library: 
+  ```
+  sudo pip install paho-mqtt
+  ```
 
-  - Install the pytz timezone library
-    - `pip install pytz`
+  - Install the pytz timezone library:
+  ```
+  pip install pytz
+  ```
 
 
 ## Using the HAT
 
-  - Clone github repository `git clone https://github.com/NAU-IoT/Power-Monitoring.git`
-  - Change into Power Monitor directory `cd Power-Monitoring`
-  - Modify PMConfiguration.py variable names and paths according to your implementation `nano PMConfiguration.py`
-  - Set permissions to make the script executable by typing `chmod +x PowerMonitor.py` in the command line
-  - To use TLS set, uncomment lines 75-77 and change 1883 to 8883 on line 80
+  - Clone github repository: 
+  ```
+  git clone https://github.com/NAU-IoT/Power-Monitoring.git
+  ```
+  - Change into Power Monitor directory: 
+  ```
+  cd Power-Monitoring
+  ```
+  - Modify PMConfiguration.py variable names and paths according to your implementation: 
+  ```
+  nano PMConfiguration.py
+  ```
+  - Set permissions to make the script executable by running: 
+  ```
+  chmod +x PowerMonitor.py
+  ```
+  - To use TLS set, uncomment lines 78-80 in PowerMonitorpy and change port to 8883 in PMConfiguration.py
   - IF USING TLS SET: ensure keyfile has the correct permissions for the user to run the script without error
-    - If getting error **"Error: Problem setting TLS options: File not found."** use command `sudo chmod 640 YourKeyFile.key` (sets permissions so that the user and group are able to read the keyfile)
-  - Run script with `./PowerMonitor.py`
-    - Can also use `python3 PowerMonitor.py`
+    - If getting `Error: Problem setting TLS options: File not found.` use the following command (sets permissions so that the user and group are able to read the keyfile):
+    ```
+    sudo chmod 640 YourKeyFile.key
+    ```
+  - Run script with: 
+  ```
+  ./PowerMonitor.py
+  ```
+  - Can also run with: 
+  ```
+  python3 PowerMonitor.py
+  ```
   - To see data being published, subscribe to the specified topic using command: 
     
-    WITHOUT TLS: `mosquitto_sub -p 1883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
+    WITHOUT TLS:
     
-    WITH TLS: `mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP`
+    ```
+    mosquitto_sub -p PORT_NUMBER -t YOUR_TOPIC -h YOUR_BROKER_IP
+    ```
+    
+    Example command:
+    ```
+    mosquitto_sub -p 1883 -t HomeNetwork -h localhost
+    ```
+    
+    WITH TLS: 
+    ```
+    mosquitto_sub --cafile YOUR_CAFILE.crt --cert YOUR_CERTFILE.crt --key YOUR_KEYFILE.key -p 8883 -t YOUR_TOPIC -h YOUR_BROKER_IP
+    ```
+    
+    Example command:
+    ```
+    mosquitto_pub --cafile /home/michael/cafile.crt --cert /home/michael/certfile.crt --key /home/michael/keyfile.key -p 8883 -d -h localhost -t HomeNetwork
+    ```
   
   - Done!
   
@@ -176,22 +270,56 @@
   ## Implementing the script as a service
   
   - Create a systemd entry 
-      - Change into Systemctl directory `cd Power-Monitoring/Systemctl` 
-      - Modify line 8 of PowerMonitor.service to reflect the correct path `nano PowerMonitor.service`
-      - Copy the .service file to correct location `sudo cp PowerMonitor.service /etc/systemd/system`
-  - Create logs directory inside of the Power-Monitoring directory `mkdir logs`
-  - Modify PowerMonitor.sh to include the correct paths (located inside of the Systemctl directory) `nano PowerMonitor.sh`
-  - Set file permissions for PowerMonitor.sh `sudo chmod 744 Power-Monitoring/Systemctl/PowerMonitor.sh`
-      - If this step is unsuccessful, here are potential solutions:
-         - Change permissions further `sudo chmod 755 Power-Monitoring/Systemctl/PowerMonitor.sh`
-         - Change permissions for the directory as well `sudo chmod 755 Power-Monitoring`
-  - Enable the service 
-      - `sudo systemctl daemon-reload`
-      - `sudo systemctl enable PowerMonitor.service`
+      - Change into Systemctl directory: 
+      ```
+      cd Power-Monitoring/Systemctl
+      ``` 
+      - Modify line 9 of PowerMonitor.service to reflect the correct path: 
+      ```
+      nano PowerMonitor.service
+      ```
+      - Copy the .service file to correct location: 
+      ```
+      sudo cp PowerMonitor.service /etc/systemd/system
+      ```
+  - Create logs directory inside of the Power-Monitoring directory: 
+  ```
+  mkdir logs
+  ```
+  - Modify PowerMonitor.sh to include the correct paths (located inside of the Systemctl directory) 
+  ```
+  nano PowerMonitor.sh
+  ```
+  - Set file permissions for PowerMonitor.sh: 
+  ```
+  sudo chmod 744 Power-Monitoring/Systemctl/PowerMonitor.sh
+  ```
+  - If previous step is unsuccessful, here are potential solutions:
+      - Change permissions further 
+      ```
+      sudo chmod 755 Power-Monitoring/Systemctl/PowerMonitor.sh
+      ```
+      - Change permissions for the directory as well: 
+      ```
+      sudo chmod 755 Power-Monitoring
+      ```
+  - Enable the service: 
+  ```
+  sudo systemctl daemon-reload
+  ```
+  ```
+  sudo systemctl enable PowerMonitor.service
+  ```
       
-  - Start the service `sudo systemctl start PowerMonitor.service`
+  - Start the service: 
+  ```
+  sudo systemctl start PowerMonitor.service
+  ```
   
-  - Check the status of the service `sudo systemctl status PowerMonitor.service`
+  - Check the status of the service: 
+  ```
+  sudo systemctl status PowerMonitor.service
+  ```
   
   - Done! The service should now run on boot. 
 
