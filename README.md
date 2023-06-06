@@ -1,14 +1,9 @@
 # Power-Monitoring
   This repository will document the process of implementing the SB components power monitoring HAT which can be purchased [here](https://www.amazon.com/components-Monitoring-Channel-Current-Raspberry/dp/B08TC6CW9Y/ref=sr_1_3?crid=1NE1E3I6JO8NI&keywords=power+monitor+hat+raspberry+pi&qid=1664130908&sprefix=power+monitor+hat+raspberry+pi,aps,104&sr=8-3).
   
-  This project also utilizes the Adafruit Powerboost 1000c which can be purchased [here](https://www.adafruit.com/product/2465) 
-  
-  
   The HAT is connected to the GPIO pins, in this case on a Raspberry Pi 4. 
   
   The HAT will be collecting data from the terminals and the data will be published remotely by using MQTT.
-
-  Details on how to run the script as a service that runs on boot are included as well. 
 
 ## Components
 
@@ -20,40 +15,64 @@
    
 **POWER MONITORING HAT**
 
-   Used to observe output of solar cell and consumption of load (load in this case is a Raspberry Pi IO Board)
+   Used to observe consumption of given load (loads in this case are a Raspberry Pi IOBoard, Jetson Nano, and another RPi4)
   
   
 
-**RASPBERRY PI IO Board**
+**RASPBERRY PI IOBOARD**
 
   Wired through the power monitoring hat to monitor consumption
     
 
-
-**SOLAR CELL**
-
-   Wired through the power monitoring hat to monitor power output
-
 # Running with Docker
 
   - Install docker:
-    - `sudo apt install docker.io`
-    - Check if docker is functioning `sudo docker run hello-world`
-  - Clone repository to get Dockerfile and configuration files `git clone https://github.com/NAU-IoT/Power-Monitoring.git`
-  - Change into docker directory `cd Power-Monitoring/pm-docker`
-  - Modify PMConfiguration.py to match your current implementation `nano PMConfiguration.py`
+  ```
+  sudo apt install docker.io
+  ```
+  - Check if docker is functioning:
+  ```
+  sudo docker run hello-world
+  ```
+  - Clone repository to get Dockerfile and configuration files: 
+  ```
+  git clone https://github.com/NAU-IoT/Power-Monitoring.git
+  ```
+  - Change into directory: 
+  ```
+  cd Power-Monitoring
+  ```
+  - Modify PMConfiguration.py to match your current implementation: 
     - Refer to comments for necessary changes
+  ```
+  nano PMConfiguration.py
+  ```
   - OPTIONAL: To change the docker containers time zone, edit line 33 in the Dockerfile. A list of acceptable time zones can be found at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
-  - Build docker image in Power-Monitoring/pm-docker directory `docker build -t powermonitor .` this will take a while
-  - Create a directory in a convenient location to store the docker volume. For example: `mkdir -p Data/PMonData`
-  - Create a volume to store data inside the directory created in the previous step `docker volume create --driver local 
+  - Build docker image in Power-Monitoring directory, this will take a while: 
+  ```
+  docker build -t powermonitor .
+  ```
+  - Create a directory in a convenient location to store the docker volume. For example: 
+  ```
+  mkdir -p Data/PMonData
+  ```
+  - Create a volume to store data inside the directory created in the previous step:
+  ```
+  docker volume create --driver local 
     --opt type=none 
     --opt device=/SOME/LOCAL/DIRECTORY 
     --opt o=bind 
-    YOUR_VOLUME_NAME`
-  - Execute docker container in Power-Monitoring/pm-docker directory `docker run --privileged -v YOUR_VOLUME_NAME:/Data -p YOUR_PORT_NUMBER:CONTAINER_PORT_NUMBER -t -i -d --restart unless-stopped powermonitor`
+    YOUR_VOLUME_NAME
+  ```
+  - Execute docker container in Power-Monitoring/pm-docker directory:
     - Note for IoT Team: Your_port_number could be 31883, container_port_number should be 31883
-  - Verify container is running `docker ps`
+  ```
+  docker run --privileged -v YOUR_VOLUME_NAME:/Data -p YOUR_PORT_NUMBER:CONTAINER_PORT_NUMBER -t -i -d --restart unless-stopped powermonitor
+  ```
+  - Verify container is running: 
+  ```
+  docker ps
+  ```
   - Done!
   
   ### Notes
