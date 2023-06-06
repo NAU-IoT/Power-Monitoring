@@ -178,7 +178,7 @@ while True:
 
     logging.debug(str(currentDandT))
     if(PrintLoad1):
-        if((shunt_voltage1 != None) and (PowerMonitor-20230529.cs != None) and (current1 != None) and (power1 != None)):
+        if((shunt_voltage1 != None) and (bus_voltage1 != None) and (current1 != None) and (power1 != None)):
            logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
         else:
            logging.debug(f"\n {Load1} data contained null value")
