@@ -15,7 +15,7 @@ import os.path
 logging.basicConfig(level=logging.DEBUG)
 
 #import variables from config file
-topic = config.topic
+Topic = config.topic
 Port = config.port
 DataPath = config.datastorage
 Broker = config.broker
@@ -33,55 +33,43 @@ Sleeptime = config.sleeptime
 
 # define on_connect function
 def on_connect(client, userdata, flags, rc):
-    print(f"Connected with result code {rc}")
+    #logging.info(f"Connected with result code {rc}")
     # subscribe, which need to put into on_connect
-    # if reconnect after losing the connection with the broker, it will continu>
-    client.subscribe(topic)
+    client.subscribe(Topic)
 
 # define on_publish function
 def on_publish(client, userdata, mid):
     """
       Callback function when topic is published.
     """
-    #logging.info("Data published successfully.")
+    # logging.info("Data published successfully.")
 
-# define on_subscribe function
-def on_subscribe(client, userdata, mid, granted_qos):
-    """
-      Callback function when topic is subscribed.
-    """
-    logging.info("Topic successfully subscribed with QoS: %s" % granted_qos)
-
-# the callback function, it will be triggered when receiving messages
-def on_message(client, userdata, msg):
-    print(f"{msg.topic} {msg.payload}")
 
 #define the publish function
-def publish(self, topic, data, qos=1, retain=False):
+def publish(self, Topic, data, qos=1, retain=False):
     """
       Publish to a topic.
     """
-    logging.info("Publishing to topic %s" % topic)
-    self.client.publish(topic, data, qos=qos, retain=retain)
+    logging.info("Publishing to topic %s" % Topic)
+    self.client.publish(Topic, data, qos=qos, retain=retain)
 
 
-#create client instance
+# Create client instance
 client = mqtt.Client()
+# Set callback functions for client
 client.on_connect = on_connect
-client.on_message = on_message
 client.on_publish = on_publish
-client.on_subscribe = on_subscribe
 
-# set the will message, when the Raspberry Pi is powered off, or the network is>
-client.will_set(topic, b'Monitoring script has terminated')
+# Set the will message, when the client unexpedetly disconnects or terminates its connection, this will publish
+client.will_set(Topic, b'Monitoring script has terminated')
 
-#establish tls set for secure connection over port 8883
+# Establish tls set for secure connection over port 8883
 #client.tls_set(ca_certs=CA_Certs,
 #               certfile=Certfile,
 #               keyfile=Keyfile)
 
-# create connection, the three parameters are broker address, broker port numbe>
-client.connect(Broker, Port, 60)
+# Create connection, the three parameters are broker address, broker port number, and keep alive time
+client.connect(Broker, Port, 60) # If using TLS, Broker is the common name on the server cert
 
 
 i2c_bus = board.I2C()
@@ -185,8 +173,8 @@ while True:
 
     Str4 = " "
 
-#put logging debug message here with data published to log (include topic name)
-    logging.debug("\n\npublishing data to topic: {}\n".format(topic))
+    #put logging debug message here with data published to log (include topic name)
+    logging.debug("\n\npublishing data to topic: {}\n".format(Topic))
 
     logging.debug(str(currentDandT))
     if(PrintLoad1):
@@ -207,16 +195,16 @@ while True:
     logging.debug("-"*100)
 
 #publish data to topic
-    client.publish(topic, Str4)
-    client.publish(topic, str(currentDandT))
+    client.publish(Topic, Str4)
+    client.publish(Topic, str(currentDandT))
     if(PrintLoad1):
-        client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+        client.publish(Topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
     if(PrintLoad2):
-        client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+        client.publish(Topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
     if(PrintLoad3):
-        client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
-    client.publish(topic, Str4)
-    client.publish(topic, Str4)
+        client.publish(Topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    client.publish(Topic, Str4)
+    client.publish(Topic, Str4)
 
 
 #write data to csv file
