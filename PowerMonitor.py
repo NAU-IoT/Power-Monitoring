@@ -136,7 +136,7 @@ while True:
     timestr = time.strftime("%Y%m%d") #update current date for newfilename
     newfilename = base + timestr + extension #combine into new filename
 
-# Test if it is a new day, i.e. newfile name has the new date in it
+    # Test if it is a new day, i.e. newfile name has the new date in it
     if(newfilename != filename):
         file.close()       #close old file
         filename = newfilename  #set filename to new date filename
