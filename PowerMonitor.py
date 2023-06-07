@@ -11,11 +11,11 @@ import PMConfiguration as config
 import csv
 import os.path
 
-#enable logging
+# Enable logging
 logging.basicConfig(level=logging.DEBUG)
 
-#import variables from config file
-topic = config.topic
+# Import variables from config file
+Topic = config.topic
 Port = config.port
 DataPath = config.datastorage
 Broker = config.broker
@@ -31,80 +31,81 @@ Keyfile = config.keyfile
 Timezone = config.timezone
 Sleeptime = config.sleeptime
 
-# define on_connect function
+# Define on_connect function
 def on_connect(client, userdata, flags, rc):
-    print(f"Connected with result code {rc}")
+    #logging.info(f"Connected with result code {rc}")
     # subscribe, which need to put into on_connect
-    # if reconnect after losing the connection with the broker, it will continu>
-    client.subscribe(topic)
+    client.subscribe(Topic)
 
-# define on_publish function
+# Define on_publish function
 def on_publish(client, userdata, mid):
     """
       Callback function when topic is published.
     """
-    #logging.info("Data published successfully.")
+    # logging.info("Data published successfully.")
 
-# define on_subscribe function
-def on_subscribe(client, userdata, mid, granted_qos):
-    """
-      Callback function when topic is subscribed.
-    """
-    logging.info("Topic successfully subscribed with QoS: %s" % granted_qos)
 
-# the callback function, it will be triggered when receiving messages
-def on_message(client, userdata, msg):
-    print(f"{msg.topic} {msg.payload}")
-
-#define the publish function
-def publish(self, topic, data, qos=1, retain=False):
+# Define the publish function
+def publish(self, Topic, data, qos=1, retain=False):
     """
       Publish to a topic.
     """
-    logging.info("Publishing to topic %s" % topic)
-    self.client.publish(topic, data, qos=qos, retain=retain)
+    logging.info("Publishing to topic %s" % Topic)
+    self.client.publish(Topic, data, qos=qos, retain=retain)
 
 
-#create client instance
+# Define check zero function
+def check_zero(shunt, bus, current) -> tuple[float, float, float]:
+    if(shunt < .0001):
+        shunt = 0.0
+    if(bus < .01):
+        bus = 0.0
+    if(current < .001):
+        current = 0.0
+    return shunt, bus, current
+        
+
+# Create client instance
 client = mqtt.Client()
+# Set callback functions for client
 client.on_connect = on_connect
-client.on_message = on_message
 client.on_publish = on_publish
-client.on_subscribe = on_subscribe
 
-# set the will message, when the Raspberry Pi is powered off, or the network is>
-client.will_set(topic, b'Monitoring script has terminated')
+# Set the will message, when the client unexpedetly disconnects or terminates its connection, this will publish
+client.will_set(Topic, b'Monitoring script has terminated')
 
-#establish tls set for secure connection over port 8883
+# Establish tls set for secure connection over port 8883
 #client.tls_set(ca_certs=CA_Certs,
 #               certfile=Certfile,
 #               keyfile=Keyfile)
 
-# create connection, the three parameters are broker address, broker port numbe>
-client.connect(Broker, Port, 60)
+# Create connection, the three parameters are broker address, broker port number, and keep alive time
+client.connect(Broker, Port, 60) # If using TLS, Broker is the common name on the server cert
 
-
+# Create i2c bus object
 i2c_bus = board.I2C()
 
+# Create 3 instances of the INA219 current sensor modules, configured to each address used by the power monitoring HAT
 ina1 = INA219(i2c_bus,addr=0x40)
 ina2 = INA219(i2c_bus,addr=0x41)
 ina3 = INA219(i2c_bus,addr=0x42)
 
-print("ina219 test")
+#print("ina219 test")
 
-ina1.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S
-ina1.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S
-ina1.bus_voltage_range = BusVoltageRange.RANGE_16V
+ina1.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # Set bus ADC resolution to 12-bit with 32-sample conversion time
+ina1.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S  # Set shunt ADC resolution to 12-bit with 32-sample conversion time
+ina1.bus_voltage_range = BusVoltageRange.RANGE_16V  # Set bus voltage range to 16V
 
-ina2.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S
-ina2.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S
-ina2.bus_voltage_range = BusVoltageRange.RANGE_16V
+ina2.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S  # Set bus ADC resolution to 12-bit with 32-sample conversion time
+ina2.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S  # Set shunt ADC resolution to 12-bit with 32-sample conversion time
+ina2.bus_voltage_range = BusVoltageRange.RANGE_16V  # Set bus voltage range to 16V
 
-ina3.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S
-ina3.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S
-ina3.bus_voltage_range = BusVoltageRange.RANGE_16V
+ina3.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S  # Set bus ADC resolution to 12-bit with 32-sample conversion time
+ina3.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S  # Set shunt ADC resolution to 12-bit with 32-sample conversion time
+ina3.bus_voltage_range = BusVoltageRange.RANGE_16V  # Set bus voltage range to 16V
 
-header = ['DateAndTime', 'LoadName', 'ShuntVoltage', 'LoadVoltage', 'Current', 'Power']
+# Initialize header for CSV file
+header = ['DateAndTime', 'LoadName', 'ShuntVoltage', 'LoadVoltage', 'Current', 'Power']  
 
 timestr = time.strftime("%Y%m%d") #current date for filename
 base = "PowerMonitor-" #base name of file
@@ -112,28 +113,30 @@ extension = ".csv" #.csv extension for filename
 filename = base + timestr + extension #combine into filename
 datastorage = DataPath + filename #append filename to end of DataPath to create one variable
 
+# test if csv file already exists
 testforfile = os.path.exists(datastorage)
 
 if(testforfile):
-
+    # File exists, append to file so it is not overwritten 
     file = open(datastorage, 'a')
     writer = csv.writer(file)
 
 else:
+    # File does not exist, open new file for writing and write header
     file = open(datastorage, 'w')
     writer = csv.writer(file)
 
-    # write the header
+    # Write the header
     writer.writerow(header)
 
 
-# measure and display loop
+# Infinite loop to read and log data
 while True:
 
     timestr = time.strftime("%Y%m%d") #update current date for newfilename
     newfilename = base + timestr + extension #combine into new filename
 
-#test if it is a new day, i.e. newfile name has the new date in it
+    # Test if it is a new day, i.e. newfile name has the new date in it
     if(newfilename != filename):
         file.close()       #close old file
         filename = newfilename  #set filename to new date filename
@@ -142,7 +145,7 @@ while True:
         writer = csv.writer(file)
         writer.writerow(header) #write the header to the new file
 
-    currentDandT = datetime.now(pytz.timezone(Timezone))
+    currentDandT = datetime.now(pytz.timezone(Timezone))  # Get current date and time 
 
     bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
     shunt_voltage1 = ina1.shunt_voltage    # voltage between V+ and V- across the shunt
@@ -159,47 +162,52 @@ while True:
     power3 = ina3.power
     current3 = ina3.current                # current in mA
 
+    # Check if shunt v, load v, or current are 0
+    shunt_voltage1, bus_voltage1, current1 = check_zero(shunt_voltage1, bus_voltage1, current1)  
+    shunt_voltage2, bus_voltage2, current2 = check_zero(shunt_voltage2, bus_voltage2, current2)
+    shunt_voltage3, bus_voltage3, current3 = check_zero(shunt_voltage3, bus_voltage3, current3)
+    
+    # Format strings with data values
     Str1 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
     Str2 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
     Str3 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
 
     Str4 = " "
 
-#put logging debug message here with data published to log (include topic name)
-    logging.debug("\n\npublishing data to topic: {}\n".format(topic))
-
+    # Logging info
+    logging.debug("\n\npublishing data to topic: {}\n".format(Topic))
     logging.debug(str(currentDandT))
     if(PrintLoad1):
         if((shunt_voltage1 != None) and (bus_voltage1 != None) and (current1 != None) and (power1 != None)):
            logging.debug(Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
         else:
-           logging.debug("\n Load1 data contained null value")
+           logging.debug(f"\n {Load1} data contained null value")
     if(PrintLoad2):
         if((shunt_voltage2 != None) and (bus_voltage2 != None) and (current2 != None) and (power2 != None)):
            logging.debug(Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
         else:
-           logging.debug("\n Load2 data contained null value")
+           logging.debug(f"\n {Load2} data contained null value")
     if(PrintLoad3):
         if((shunt_voltage3 != None) and (bus_voltage3 != None) and (current3 != None) and (power3 != None)):
            logging.debug(Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
         else:
-           logging.debug("\n Load 3 data contained null value")
+           logging.debug(f"\n {Load3} data contained null value")
     logging.debug("-"*100)
 
-#publish data to topic
-    client.publish(topic, Str4)
-    client.publish(topic, str(currentDandT))
+    # Publish data to topic
+    client.publish(Topic, Str4)
+    client.publish(Topic, str(currentDandT))
     if(PrintLoad1):
-        client.publish(topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
+        client.publish(Topic, Str1.format((Load1),(shunt_voltage1),(bus_voltage1),(current1/1000),(power1)))
     if(PrintLoad2):
-        client.publish(topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
+        client.publish(Topic, Str2.format((Load2),(shunt_voltage2),(bus_voltage2),(current2/1000),(power2)))
     if(PrintLoad3):
-        client.publish(topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
-    client.publish(topic, Str4)
-    client.publish(topic, Str4)
+        client.publish(Topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
+    client.publish(Topic, Str4)
+    client.publish(Topic, Str4)
 
 
-#write data to csv file
+    # Write data to csv file
     data1 = [currentDandT, Load1, round(shunt_voltage1, 6), round(bus_voltage1, 3), round(current1/1000, 6), round(power1, 6)]
     data2 = [currentDandT, Load2, round(shunt_voltage2, 6), round(bus_voltage2, 3), round(current2/1000, 6), round(power2, 6)]
     data3 = [currentDandT, Load3, round(shunt_voltage3, 6), round(bus_voltage3, 3), round(current3/1000, 6), round(power3, 6)]
@@ -210,6 +218,6 @@ while True:
     if(PrintLoad3 and (None not in data3)):
         writer.writerow(data3)
 
-    file.flush() #flush data to disk
+    file.flush() # Flush data to disk
 
     time.sleep(Sleeptime)
