@@ -101,7 +101,8 @@
     ```
     
     Expected output format:
-    <img width="841" alt="Screen Shot 2023-05-04 at 7 51 34 PM" src="https://user-images.githubusercontent.com/72172361/236368404-8bf43963-de3c-4c1a-b912-72a7be026c1f.png">
+    <img width="858" alt="Screen Shot 2023-06-07 at 2 02 16 PM" src="https://github.com/NAU-IoT/Power-Monitoring/assets/72172361/47a0c848-3795-42cb-afd2-d8fb52ee67d0">
+
 
     
   - To enter the container:
