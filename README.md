@@ -87,7 +87,7 @@
     
     Example command:
     ```
-    mosquitto_sub -p 1883 -t HomeNetwork -h localhost
+    mosquitto_sub -p 31883 -t PowerMonitoring -h localhost
     ```
     
     WITH TLS: 
@@ -97,7 +97,7 @@
     
     Example command:
     ```
-    mosquitto_pub --cafile /home/michael/cafile.crt --cert /home/michael/certfile.crt --key /home/michael/keyfile.key -p 8883 -d -h localhost -t HomeNetwork
+    mosquitto_pub --cafile /home/michael/cafile.crt --cert /home/michael/certfile.crt --key /home/michael/keyfile.key -p 8883 -d -h localhost -t PowerMonitoring
     ```
     
     Expected output format:
