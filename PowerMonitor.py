@@ -55,7 +55,7 @@ def publish(self, Topic, data, qos=1, retain=False):
 
 
 # Define check zero function
-def check_zero(shunt, bus, current) -> Tuple[float, float, float]:
+def check_zero(shunt, bus, current) -> tuple[float, float, float]:
     if(shunt < .0001):
         shunt = 0.0
     if(bus < .01):
