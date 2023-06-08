@@ -105,7 +105,7 @@ def check_new_day(filename, Datapath, file)
         file = open(datastorage, 'w')   #open new file with current date
         writer = csv.writer(file)
         writer.writerow(header) #write the header to the new file
-    return filename, file, datastorage, writer
+        return filename, file, datastorage, writer
 
 # Function to get energy measurements
 def red_ina_values(ina):
