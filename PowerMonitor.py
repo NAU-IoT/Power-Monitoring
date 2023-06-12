@@ -75,7 +75,7 @@ def generate_filename():
 
 
 # Function to open a csv file
-def open_csv_file(datastoragelocation, header):
+def open_csv_file(datastorage, header):
     # test if csv file already exists
     testforfile = os.path.exists(datastorage)
     
@@ -95,20 +95,20 @@ def open_csv_file(datastoragelocation, header):
 
 
 # Function to check if it is a new day, and if so open a new file
-def check_new_day(filename, Datapath, file)
+def check_new_day(filename, datapath, file)
     newfilename = generate_filename() # Generate new file with current timestamp
     # Test if it is a new day, i.e. newfile name has the new date in it
     if(newfilename != filename):
         file.close()       #close old file
         filename = newfilename  #set filename to new date filename
-        datastorage = DataPath + filename #update variable
+        datastorage = datapath + filename #update variable
         file = open(datastorage, 'w')   #open new file with current date
         writer = csv.writer(file)
         writer.writerow(header) #write the header to the new file
         return filename, file, datastorage, writer
 
 # Function to get energy measurements
-def red_ina_values(ina):
+def read_ina_values(ina):
     bus_voltage = ina.bus_voltage        # voltage on V- (load side)
     shunt_voltage = ina.shunt_voltage    # voltage between V+ and V- across the shunt
     power = ina.power
