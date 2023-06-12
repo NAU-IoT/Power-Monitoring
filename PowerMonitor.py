@@ -95,7 +95,7 @@ def open_csv_file(datastorage, header):
 
 
 # Function to check if it is a new day, and if so open a new file
-def check_new_day(filename, datapath, file)
+def check_new_day(filename, file, datapath, datastorage, writer):
     newfilename = generate_filename() # Generate new file with current timestamp
     # Test if it is a new day, i.e. newfile name has the new date in it
     if(newfilename != filename):
@@ -105,7 +105,7 @@ def check_new_day(filename, datapath, file)
         file = open(datastorage, 'w')   #open new file with current date
         writer = csv.writer(file)
         writer.writerow(header) #write the header to the new file
-        return filename, file, datastorage, writer
+    return filename, file, datastorage, writer
 
 # Function to get energy measurements
 def read_ina_values(ina):
@@ -167,7 +167,7 @@ file, writer = open_csv_file(datastorage, header) # Parameters are (data storage
 # Infinite loop to read and log data
 while True:
 
-    filename, file, datastorage, writer = check_new_day(filename, file, DataPath)
+    filename, file, datastorage, writer = check_new_day(filename, file, DataPath, datastorage, writer)
 
     currentDandT = datetime.now(pytz.timezone(Timezone))  # Get current date and time 
 
