@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+# Import libraries
 import time
 from datetime import datetime
 import pytz
@@ -78,19 +79,16 @@ def generate_filename():
 def open_csv_file(datastorage, header):
     # test if csv file already exists
     testforfile = os.path.exists(datastorage)
-    
     if(testforfile):
       # File exists, append to file so it is not overwritten 
       file = open(datastorage, 'a')
       writer = csv.writer(file)
-    
     else:
       # File does not exist, open new file for writing and write header
       file = open(datastorage, 'w')
       writer = csv.writer(file)
       # Write the header
       writer.writerow(header)
-    
     return file, writer
 
 
@@ -114,7 +112,7 @@ def read_ina_values(ina):
     power = ina.power
     current = ina.current                # current in mA
     return bus_voltage, shunt_voltage, power, current
-    
+
 
 # Create client instance
 client = mqtt.Client()
@@ -186,7 +184,7 @@ while True:
     Str1 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
     Str2 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
     Str3 = "{:<23}  Shunt Voltage:{:9.6f}V    Load Voltage:{:6.3f}V    Current:{:9.6f}A    Power:{:9.6f}W"
-
+    
     Str4 = " "
 
     # Logging info
@@ -220,7 +218,6 @@ while True:
         client.publish(Topic, Str3.format((Load3),(shunt_voltage3),(bus_voltage3),(current3/1000),(power3)))
     client.publish(Topic, Str4)
     client.publish(Topic, Str4)
-
 
     # Write data to csv file
     data1 = [currentDandT, Load1, round(shunt_voltage1, 6), round(bus_voltage1, 3), round(current1/1000, 6), round(power1, 6)]
