@@ -63,7 +63,58 @@ def check_zero(shunt, bus, current) -> tuple[float, float, float]:
     if(current < .001):
         current = 0.0
     return shunt, bus, current
-        
+
+
+# Function to generate a filename
+def generate_filename():
+    timestr = time.strftime("%Y%m%d") #current date for filename
+    base = "PowerMonitor-" #base name of file
+    extension = ".csv" #.csv extension for filename
+    filename = base + timestr + extension #combine into filename
+    return filename
+
+
+# Function to open a csv file
+def open_csv_file(datastorage, header):
+    # test if csv file already exists
+    testforfile = os.path.exists(datastorage)
+    
+    if(testforfile):
+      # File exists, append to file so it is not overwritten 
+      file = open(datastorage, 'a')
+      writer = csv.writer(file)
+    
+    else:
+      # File does not exist, open new file for writing and write header
+      file = open(datastorage, 'w')
+      writer = csv.writer(file)
+      # Write the header
+      writer.writerow(header)
+    
+    return file, writer
+
+
+# Function to check if it is a new day, and if so open a new file
+def check_new_day(filename, file, datapath, datastorage, writer):
+    newfilename = generate_filename() # Generate new file with current timestamp
+    # Test if it is a new day, i.e. newfile name has the new date in it
+    if(newfilename != filename):
+        file.close()       #close old file
+        filename = newfilename  #set filename to new date filename
+        datastorage = datapath + filename #update variable
+        file = open(datastorage, 'w')   #open new file with current date
+        writer = csv.writer(file)
+        writer.writerow(header) #write the header to the new file
+    return filename, file, datastorage, writer
+
+# Function to get energy measurements
+def read_ina_values(ina):
+    bus_voltage = ina.bus_voltage        # voltage on V- (load side)
+    shunt_voltage = ina.shunt_voltage    # voltage between V+ and V- across the shunt
+    power = ina.power
+    current = ina.current                # current in mA
+    return bus_voltage, shunt_voltage, power, current
+    
 
 # Create client instance
 client = mqtt.Client()
@@ -107,60 +158,24 @@ ina3.bus_voltage_range = BusVoltageRange.RANGE_16V  # Set bus voltage range to 1
 # Initialize header for CSV file
 header = ['DateAndTime', 'LoadName', 'ShuntVoltage', 'LoadVoltage', 'Current', 'Power']  
 
-timestr = time.strftime("%Y%m%d") #current date for filename
-base = "PowerMonitor-" #base name of file
-extension = ".csv" #.csv extension for filename
-filename = base + timestr + extension #combine into filename
-datastorage = DataPath + filename #append filename to end of DataPath to create one variable
+filename = generate_filename() # Generate filename
 
-# test if csv file already exists
-testforfile = os.path.exists(datastorage)
+datastorage = DataPath + filename # Append filename to end of DataPath
 
-if(testforfile):
-    # File exists, append to file so it is not overwritten 
-    file = open(datastorage, 'a')
-    writer = csv.writer(file)
-
-else:
-    # File does not exist, open new file for writing and write header
-    file = open(datastorage, 'w')
-    writer = csv.writer(file)
-
-    # Write the header
-    writer.writerow(header)
-
+file, writer = open_csv_file(datastorage, header) # Parameters are (data storage location, header)
 
 # Infinite loop to read and log data
 while True:
 
-    timestr = time.strftime("%Y%m%d") #update current date for newfilename
-    newfilename = base + timestr + extension #combine into new filename
-
-    # Test if it is a new day, i.e. newfile name has the new date in it
-    if(newfilename != filename):
-        file.close()       #close old file
-        filename = newfilename  #set filename to new date filename
-        datastorage = DataPath + filename #update variable
-        file = open(datastorage, 'w')   #open new file with current date
-        writer = csv.writer(file)
-        writer.writerow(header) #write the header to the new file
+    filename, file, datastorage, writer = check_new_day(filename, file, DataPath, datastorage, writer)
 
     currentDandT = datetime.now(pytz.timezone(Timezone))  # Get current date and time 
 
-    bus_voltage1 = ina1.bus_voltage        # voltage on V- (load side)
-    shunt_voltage1 = ina1.shunt_voltage    # voltage between V+ and V- across the shunt
-    power1 = ina1.power
-    current1 = ina1.current                # current in mA
+    bus_voltage1, shunt_voltage1, power1, current1 = read_ina_values(ina1) # Get Energy measurements for first terminals
 
-    bus_voltage2 = ina2.bus_voltage        # voltage on V- (load side)
-    shunt_voltage2 = ina2.shunt_voltage    # voltage between V+ and V- across the shunt
-    power2 = ina2.power
-    current2 = ina2.current                # current in mA
+    bus_voltage2, shunt_voltage2, power2, current2 = read_ina_values(ina2) # Get Energy measurements for second terminals
 
-    bus_voltage3 = ina3.bus_voltage        # voltage on V- (load side)
-    shunt_voltage3 = ina3.shunt_voltage    # voltage between V+ and V- across the shunt
-    power3 = ina3.power
-    current3 = ina3.current                # current in mA
+    bus_voltage3, shunt_voltage3, power3, current3 = read_ina_values(ina3) # Get Energy measurements for third terminals
 
     # Check if shunt v, load v, or current are 0
     shunt_voltage1, bus_voltage1, current1 = check_zero(shunt_voltage1, bus_voltage1, current1)  
