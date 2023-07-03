@@ -58,10 +58,10 @@
   ```
   - Create a volume to store data inside the directory created in the previous step:
   ```
-  docker volume create --driver local 
-    --opt type=none 
-    --opt device=/SOME/LOCAL/DIRECTORY 
-    --opt o=bind 
+  docker volume create --driver local \
+    --opt type=none \
+    --opt device=/SOME/LOCAL/DIRECTORY \
+    --opt o=bind \
     YOUR_VOLUME_NAME
   ```
   - Execute docker container in Power-Monitoring/pm-docker directory:
