@@ -23,7 +23,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Copy necessary files to local docker container environment
 COPY mosquitto.conf /etc/mosquitto/
-ADD PMConfiguration.py /PMConfiguration.py
+ADD PMConfiguration.yaml /PMConfiguration.yaml
 ADD PowerMonitor.py /PowerMonitor.py
 ADD PowerMonitor.sh /PowerMonitor.sh
 ADD crontab /etc/cron.d/simple-cron
