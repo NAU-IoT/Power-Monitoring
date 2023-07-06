@@ -115,10 +115,12 @@
  
   - If error: `Got permission denied while trying to connect to the Docker daemon socket at unix ... connect: permission denied`
     - Run command, then log out and ssh back into system:
-  ```
-  sudo usermod -aG docker $USER
-  ```
-
+      ```
+      sudo usermod -aG docker $USER
+      ```
+  - If error: `socket.gaierror: [Errno -2] Name or service not known`
+    - Most likely an issue with a DNS name/IP address not being recognized inside the configuration file.
+    - IoT Team: Confirm that your configuration file is correct and that you have the correct DNS resolution name for the desired network interface you want to access (WiFi vs. Ethernet)
 
 
 # Running with Python & Systemctl
