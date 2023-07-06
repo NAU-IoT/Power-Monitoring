@@ -10,6 +10,7 @@ import paho.mqtt.client as mqtt
 import logging
 import csv
 import os.path
+import yaml
 
 
 def load_config():
@@ -57,7 +58,7 @@ def publish(self, Topic, data, qos=1, retain=False):
     self.client.publish(Topic, data, qos=qos, retain=retain)
 
 
-# Define check zero function
+# Define check zero function, checks values so there are no values like .000005 in the data
 def check_zero(shunt, bus, current) -> tuple[float, float, float]:
     if(shunt < .0001):
         shunt = 0.0
