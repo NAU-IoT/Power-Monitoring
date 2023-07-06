@@ -8,7 +8,7 @@ RUN apt-get update
 RUN apt-get install -y python3 python3-pip python3-smbus python3-dev i2c-tools python3-lgpio software-properties-common
 
 # Install pip dependencies
-RUN pip install adafruit-circuitpython-ina219 rpi.gpio paho-mqtt pytz
+RUN pip install adafruit-circuitpython-ina219 rpi.gpio paho-mqtt pytz PyYAML
 
 # Add latest mosquitto repo
 RUN apt-add-repository ppa:mosquitto-dev/mosquitto-ppa
