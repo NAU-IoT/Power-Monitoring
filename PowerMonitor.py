@@ -15,7 +15,7 @@ import yaml
 
 def load_config():
    # Load the YAML file
-   with open(PMConfiguration.yaml, 'r') as file:
+   with open('/PMConfiguration.yaml', 'r') as file:
        config = yaml.safe_load(file)
    # Globalize variables
    global Topic
