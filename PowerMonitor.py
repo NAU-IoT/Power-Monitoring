@@ -17,22 +17,39 @@ def load_config():
    # Load the YAML file
    with open(PMConfiguration.yaml, 'r') as file:
        config = yaml.safe_load(file)
+   # Globalize variables
+   global Topic
+   global Port
+   global DataPath
+   global Broker
+   global Load1
+   global Load2
+   global Load3
+   global PrintLoad1
+   global PrintLoad2
+   global PrintLoad3
+   global CA_Certs
+   global Certfile
+   global Keyfile
+   global Timezone
+   global Sleeptime
+   
    # Import variables from config file
-   global Topic = config['topic']
-   global Port = config['port']
-   global DataPath = config['datastorage']
-   global Broker = config['broker']
-   global Load1 = config['load1']
-   global Load2 = config['load2']
-   global Load3 = config['load3']
-   global PrintLoad1 = config['printload1']
-   global PrintLoad2 = config['printload2']
-   global PrintLoad3 = config['printload3']
-   global CA_Certs = config['cacert']
-   global Certfile = config['certfile']
-   global Keyfile = config['keyfile']
-   global Timezone = config['timezone']
-   global Sleeptime = config['sleeptime']
+   Topic = config['topic']
+   Port = config['port']
+   DataPath = config['datastorage']
+   Broker = config['broker']
+   Load1 = config['load1']
+   Load2 = config['load2']
+   Load3 = config['load3']
+   PrintLoad1 = config['printload1']
+   PrintLoad2 = config['printload2']
+   PrintLoad3 = config['printload3']
+   CA_Certs = config['cacert']
+   Certfile = config['certfile']
+   Keyfile = config['keyfile']
+   Timezone = config['timezone']
+   Sleeptime = config['sleeptime']
 
 
 # Define on_connect function
