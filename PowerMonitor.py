@@ -136,8 +136,10 @@ def read_ina_values(ina):
 
 
 def main():
+    # Load configuration
+    load_config()
     # Enable logging
-    global logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.DEBUG)
     
     # Create client instance
     client = mqtt.Client()
