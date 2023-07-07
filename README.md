@@ -47,7 +47,7 @@
   ```
   nano PMConfiguration.yaml
   ```
-  - OPTIONAL: To change the docker containers time zone, edit line 33 in the Dockerfile. A list of acceptable time zones can be found at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
+  - OPTIONAL: To change the docker containers time zone, edit line 21 in the Dockerfile. A list of acceptable time zones can be found at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones 
   - Build docker image in Power-Monitoring directory, this will take a while: 
   ```
   docker build -t powermonitor .
