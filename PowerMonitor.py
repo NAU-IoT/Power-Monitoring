@@ -33,7 +33,7 @@ def load_config():
    global Keyfile
    global Timezone
    global Sleeptime
-   
+
    # Import variables from config file
    Topic = config['topic']
    Port = config['port']
